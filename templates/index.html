@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UnityBank - Smart Money Tracker</title>
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* CONTAINER */
+.container{
+    width:100%;
+    max-width:400px;
+    text-align:center;
+    padding:20px;
+}
+
+/* LOGO */
+.logo{
+    font-size:26px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.logo span{
+    color:#b8860b;
+}
+
+/* IMAGE */
+.illustration{
+    width:100%;
+    max-width:240px;
+    margin:20px auto;
+    display:block;
+}
+
+/* TITLE */
+.title{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.sub{
+    font-size:14px;
+    color:#9ca3af;
+    margin:10px 0 25px;
+    line-height:1.5;
+}
+
+/* BUTTON LINK WRAPPER */
+.btn-link{
+    text-decoration:none;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:30px;
+    background:#b8860b;
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#966d09;
+}
+
+/* LOGIN LINK */
+.login{
+    margin-top:20px;
+    font-size:14px;
+    color:#9ca3af;
+}
+
+.login a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.login a:hover{
+    text-decoration:underline;
+}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+    .title{
+        font-size:18px;
+    }
+
+    .sub{
+        font-size:13px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGO -->
+    <div class="logo">Unity<span>Bank</span></div>
+
+    <!-- IMAGE -->
+    <img 
+        src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" 
+        alt="Finance Illustration"
+        class="illustration"
+    >
+
+    <!-- TEXT -->
+    <div class="title">Track & Monitor Your Money</div>
+
+    <div class="sub">
+        We help you manage your finances, track transactions,
+        and stay in control of your money.
+    </div>
+
+    <!-- BUTTON -->
+  <a href="{{ url_for('register') }}" class="btn-link">
+    <button class="btn">Create Account</button>
+</a>
+
+<div class="login">
+    Already have an account?
+    <a href="{{ url_for('login') }}">Log in</a>
+</div>
+    </div>
+
+</div>
+
+</body>
+</html>

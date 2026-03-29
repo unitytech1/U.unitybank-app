@@ -1,0 +1,25 @@
+# --- add_profile_pic_column.py ---
+# RUN THIS FILE ONCE TO UPDATE THE DATABASE
+import sqlite3
+
+DATABASE = 'unity_bank.db' # Make sure this matches your app.py
+
+def update_database():
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        # <<< YOUR TARGETED DB MIGRATION >>>
+        # We are adding a new, text-based column to store the file path.
+        # We default it to a generic placeholder (e.g., 'default.jpg').
+        cursor.execute("ALTER TABLE user ADD COLUMN profile_pic_path TEXT DEFAULT 'default.jpg';")
+        
+        conn.commit()
+        print("Success: Database updated. Column 'profile_pic_path' added.")
+    except sqlite3.OperationalError as e:
+        print(f"Error: Could not update database. (It might already be updated?) {e}")
+    finally:
+        conn.close()
+
+if __name__ == '_main_':
+    update_database()

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Care Chat</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:#020617;
+    color:white;
+}
+
+/* HEADER */
+.header{
+    padding:15px;
+    background:#111827;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* CHAT AREA */
+.chat-box{
+    padding:15px;
+    height:70vh;
+    overflow-y:auto;
+}
+
+/* MESSAGE */
+.message{
+    margin-bottom:10px;
+    max-width:70%;
+    padding:10px;
+    border-radius:10px;
+}
+
+.bot{
+    background:#1f2937;
+}
+
+.user{
+    background:#22c55e;
+    margin-left:auto;
+}
+
+/* INPUT */
+.input-area{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display:flex;
+    background:#111827;
+}
+.input-area input{
+    flex:1;
+    padding:15px;
+    border:none;
+    outline:none;
+    background:#1f2937;
+    color:white;
+    font-size:16px; /* 🔥 THIS STOPS ZOOM */
+}
+
+.input-area button{
+    padding:15px;
+    border:none;
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+}
+input, textarea {
+    font-size:16px !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">💬 UnityBank Support</div>
+
+<div class="chat-box" id="chat">
+
+    <div class="message bot">
+        Hello 👋, welcome to UnityBank support.<br>
+        How can we assist you today?
+    </div>
+
+</div>
+
+<div class="input-area">
+    <input type="text" id="msg" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function sendMessage(){
+    let input = document.getElementById("msg");
+    let chat = document.getElementById("chat");
+
+    if(input.value.trim() === "") return;
+
+    // User message
+    let userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.innerText = input.value;
+    chat.appendChild(userMsg);
+
+    // Fake bot reply
+    let botMsg = document.createElement("div");
+    botMsg.className = "message bot";
+
+    if(input.value.toLowerCase().includes("blocked")){
+        botMsg.innerText = "Your account is currently blocked. Please visit our branch with valid ID.";
+    } else {
+        botMsg.innerText = "Thank you for contacting UnityBank. Our agent will review your issue.";
+    }
+
+    setTimeout(()=>{
+        chat.appendChild(botMsg);
+        chat.scrollTop = chat.scrollHeight;
+    }, 800);
+
+    input.value = "";
+}
+</script>
+
+</body>
+</html>

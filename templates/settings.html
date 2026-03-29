@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings</title>
+
+<style>
+
+/* BODY */
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+    padding:15px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:500px;
+    margin:auto;
+}
+
+/* PROFILE CARD */
+.profile-card{
+    background:#111827;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.profile-img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #22c55e;
+    margin-bottom:10px;
+}
+
+.name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.email{
+    font-size:12px;
+    color:#94a3b8;
+}
+
+/* BUTTON */
+.btn{
+    margin-top:10px;
+    background:#22c55e;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+/* SECTION */
+.section{
+    background:#111827;
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.section-title{
+    font-size:13px;
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+/* ITEM */
+.item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid #1f2937;
+}
+
+.item:last-child{
+    border-bottom:none;
+}
+
+.item-left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+/* SWITCH */
+.switch{
+    width:40px;
+    height:20px;
+    background:#1f2937;
+    border-radius:20px;
+    position:relative;
+}
+
+.switch::after{
+    content:'';
+    width:16px;
+    height:16px;
+    background:white;
+    position:absolute;
+    top:2px;
+    left:2px;
+    border-radius:50%;
+}
+
+/* LOGOUT */
+.logout{
+    background:#dc2626;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.logout a{
+    color:white;
+    text-decoration:none;
+}
+
+/* NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#020617;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    border-top:1px solid #1f2937;
+}
+
+.bottom-nav a{
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:12px;
+    text-align:center;
+}
+
+.bottom-nav a:hover{
+    color:#22c55e;
+}
+
+.logout-btn{
+    display:block;
+    text-align:center;
+    background:#ef4444;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    text-decoration:none;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+}
+
+.edit-btn{
+    margin-top:10px;
+    background:#22c55e;
+    border:none;
+    padding:8px 15px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+.upload-btn{
+    margin-top:10px;
+    background:#22c55e;
+    border:none;
+    padding:8px 15px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- PROFILE CARD -->
+<div class="profile-card">
+
+    <!-- ✅ FIXED IMAGE (NO MORE CRASH) -->
+    <img src="{{ url_for('static', filename='uploads/' + (current_user.profile_pic_path or 'default.png')) }}" class="profile-img">
+
+    <!-- ✅ SAFE TEXT -->
+    <div class="name">{{ current_user.full_name or 'User' }}</div>
+    <div class="email">{{ current_user.email or '' }}</div>
+
+    <!-- EDIT BUTTON -->
+    <button class="edit-btn" onclick="showUpload()">Edit Profile</button>
+
+    <!-- HIDDEN UPLOAD FORM -->
+    <form method="POST" action="/upload_profile_pic" enctype="multipart/form-data" id="uploadForm" style="display:none; margin-top:15px;">
+
+        <input type="file" name="profile_pic" required>
+
+        <button type="submit" class="upload-btn">Upload</button>
+
+    </form>
+
+</div>
+   
+<!-- ACCOUNT -->
+<div class="section">
+    <div class="section-title">Account</div>
+
+    <a href="/change_password" style="color:white; text-decoration:none;">
+        🔑 Change Password
+    </a>
+
+    <div class="item">
+        <div class="item-left">🔐 Change PIN</div>
+        <div>›</div>
+    </div>
+
+    <div class="item">
+        <div class="item-left">🔔 Notifications</div>
+        <div class="switch"></div>
+    </div>
+</div>
+
+<!-- SECURITY -->
+<div class="section">
+    <div class="section-title">Security</div>
+
+    <div class="item">
+        <div class="item-left">🧠 Face ID / Biometrics</div>
+        <div class="switch"></div>
+    </div>
+
+    <div class="item">
+        <div class="item-left">📱 Device Management</div>
+        <div>›</div>
+    </div>
+</div>
+
+<!-- LOGOUT -->
+<div class="logout">
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+</div>
+
+<!-- NAV -->
+<div class="bottom-nav">
+    <a href="/dashboard">🏠<br>Home</a>
+    <a href="/invest">📈<br>Invest</a>
+    <a href="/transactions">📄<br>History</a>
+    <a href="/settings">⚙️<br>Settings</a>
+</div>
+
+<script>
+function showUpload() {
+    document.getElementById("uploadForm").style.display = "block";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unity Bank Dashboard</title>
+
+<style>
+
+/* BODY */
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+}
+
+/* LAYOUT */
+.container{
+    display:grid;
+    grid-template-columns:220px 1fr;
+}
+
+@media (max-width:768px){
+    .container{
+        display:block;
+    }
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:#020617;
+    padding:20px;
+    height:100vh;
+}
+
+.sidebar a{
+    display:block;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:8px;
+    color:#94a3b8;
+    text-decoration:none;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:white;
+}
+
+/* MAIN */
+.main {
+    padding: 15px;
+    padding-bottom: 90px;
+}
+
+/* PAGE */
+.page{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* PROFILE */
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+/* BALANCE BOX (UPGRADED) */
+.balance-box{
+    background:#111827;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.balance-box h1{
+    font-size:28px;
+    margin:10px 0;
+}
+
+/* ACTION ICONS */
+.actions-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:15px;
+}
+
+.circle{
+    background:#1e293b;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:13px;
+    color:white;
+    text-decoration:none;
+    transition:0.2s;
+}
+
+.circle:hover{
+    background:#334155;
+    transform:scale(1.05);
+}
+
+/* HISTORY */
+.history{
+    background:#0f172a;
+    padding:15px;
+    border-radius:16px;
+}
+
+.tx{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #1f2937;
+}
+
+.credit{color:#22c55e;}
+.debit{color:#ef4444;}
+
+/* CARD */
+/* =========================
+   CARD SLIDER
+========================= */
+.card-slider{
+    display:flex;
+    gap:15px;
+    overflow-x:auto;
+    padding:10px 0;
+    scroll-snap-type:x mandatory;
+}
+
+.card-slider::-webkit-scrollbar{
+    display:none;
+}
+
+/* =========================
+   CARD UI (UPDATED DESIGN)
+========================= */
+.card-ui{
+    min-width:300px;
+    flex-shrink:0;
+    border-radius:20px;
+    padding:20px;
+    color:white;
+    scroll-snap-align:start;
+
+    /* 🔴 PREMIUM RED ATM STYLE */
+    background: linear-gradient(135deg, #7f1d1d, #dc2626, #111827);
+
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.6),
+        inset 0 0 30px rgba(255,255,255,0.05);
+
+    position:relative;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+/* ✨ CURVED LIGHT EFFECT */
+.card-ui::before{
+    content:'';
+    position:absolute;
+    width:200%;
+    height:200%;
+    top:-60%;
+    left:-50%;
+    background:rgba(255,255,255,0.06);
+    border-radius:50%;
+}
+
+/* 🔥 HOVER EFFECT */
+.card-ui:hover{
+    transform: translateY(-5px);
+    box-shadow: 
+        0 25px 50px rgba(0,0,0,0.8),
+        0 0 20px rgba(220,38,38,0.4);
+}
+
+/* =========================
+   CARD STRUCTURE
+========================= */
+.card-top{
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.card-number{
+    margin:20px 0;
+    font-size:18px;
+    letter-spacing:2px;
+    font-weight:500;
+}
+
+.card-bottom{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    opacity:0.9;
+}
+
+/* BUTTON */
+button{
+    padding:6px 10px;
+    border:none;
+    border-radius:6px;
+    background:#1f2937;
+    color:white;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+    .sidebar{
+        display:none;
+    }
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#020617;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    border-top:1px solid #1f2937;
+    z-index:1000;
+}
+
+.bottom-nav a{
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:11px;
+    text-align:center;
+}
+
+.bottom-nav a:hover{
+    color:#22c55e;
+}
+/* INVESTMENT BOX */
+.investment-box{
+    background:#0f172a;
+    padding:15px;
+    border-radius:16px;
+    margin-top:10px;
+}
+
+/* HEADER */
+.investment-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.investment-header span{
+    font-size:12px;
+    color:#94a3b8;
+}
+
+/* ITEM */
+.investment-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #1f2937;
+}
+
+.investment-item:last-child{
+    border-bottom:none;
+}
+
+/* LEFT SIDE */
+.left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.icon{
+    width:35px;
+    height:35px;
+    background:#1e293b;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+/* RIGHT SIDE */
+.right{
+    text-align:right;
+}
+
+.profit{
+    color:#22c55e;
+    font-size:12px;
+}
+.inv-icon{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#1e293b;
+    padding:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- RECEIVE POPUP -->
+<div id="receiveBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center;">
+    <div style="background:#111827; padding:30px; border-radius:12px; text-align:center; width:300px;">
+        <h3>Receive Money</h3>
+        <p><b>Bank:</b> UnityBank</p>
+        <p><b>Account Name:</b> {{ user.full_name }}</p>
+        <p><b>Account Number:</b> 2039485721</p>
+        <button onclick="closeReceive()">Close</button>
+    </div>
+</div>
+
+<!-- LOADER -->
+<div id="loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:black; justify-content:center; align-items:center;">
+    <div style="color:white;">Loading...</div>
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>UnityBank</h2>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('transfer') }}">Transfer</a>
+    <a href="{{ url_for('transactions') }}">History</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- PAGE 1 -->
+<div class="page page-1">
+
+<div class="profile">
+    <img src="{{ url_for('static', filename='uploads/' + (user.profile_pic_path or 'default.jpg')) }}">
+    <div>
+        <h2>Welcome back, {{ user.full_name }}</h2>
+        <small>Your financial overview</small>
+    </div>
+</div>
+
+<!-- BALANCE -->
+<div class="balance-box">
+    <p>Balance</p>
+    <h1>${{ "{:,.2f}".format(user.balance or 0) }} 👁️</h1>
+
+    <div class="actions-row">
+        <a href="{{ url_for('transfer') }}" class="circle">💸<br><small>Send</small></a>
+        <a href="#" onclick="showReceive()" class="circle">📥<br><small>Receive</small></a>
+        <div class="circle">➕<br><small>Top Up</small></div>
+        <div class="circle">🔒<br><small>Freeze</small></div>
+    </div>
+</div>
+<!-- CARD SLIDER -->
+<div class="card-slider">
+
+    <div class="card-ui">
+        <div class="card-top">
+            <h4>UnityBank</h4>
+            <span>VISA</span>
+        </div>
+
+        <div class="card-number">
+            **** **** **** 2048
+        </div>
+
+        <div class="card-bottom">
+            <div>
+                <small>VALID THRU</small>
+                <p>05/28</p>
+            </div>
+            <div>
+                <small>CARD HOLDER</small>
+                <p>{{ user.full_name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-ui">
+        <div class="card-top">
+            <h4>UnityBank</h4>
+            <span>MASTER</span>
+        </div>
+
+        <div class="card-number">
+            **** **** **** 7821
+        </div>
+
+        <div class="card-bottom">
+            <div>
+                <small>VALID THRU</small>
+                <p>08/29</p>
+            </div>
+            <div>
+                <small>CARD HOLDER</small>
+                <p>{{ user.full_name }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="investment-box">
+
+    <div class="investment-header">
+        <h3>Investments portfolio</h3>
+        <span>View all</span>
+    </div>
+
+    <!-- APPLE -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" class="inv-icon">
+            <div>
+                <p>Apple</p>
+                <small>Stocks</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$129.89</p>
+            <small class="profit">+3.5%</small>
+        </div>
+    </div>
+
+    <!-- TESLA -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968661.png" class="inv-icon">
+            <div>
+                <p>Tesla</p>
+                <small>Growth Stock</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$210.45</p>
+            <small class="profit">+2.1%</small>
+        </div>
+    </div>
+
+    <!-- MICROSOFT -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" class="inv-icon">
+            <div>
+                <p>Microsoft</p>
+                <small>Value Stock</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$320.11</p>
+            <small class="profit">+1.8%</small>
+        </div>
+    </div>
+
+    <!-- BITCOIN -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/825/825508.png" class="inv-icon">
+            <div>
+                <p>Bitcoin</p>
+                <small>Crypto</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$210.93</p>
+            <small class="profit">+1.2%</small>
+        </div>
+    </div>
+
+    <!-- ETHEREUM -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/7016/7016523.png" class="inv-icon">
+            <div>
+                <p>Ethereum</p>
+                <small>Crypto</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$98.21</p>
+            <small class="profit">+4.8%</small>
+        </div>
+    </div>
+
+    <!-- S&P 500 -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" class="inv-icon">
+            <div>
+                <p>S&P 500</p>
+                <small>Index Fund</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$450.32</p>
+            <small class="profit">+2.7%</small>
+        </div>
+    </div>
+
+    <!-- REAL ESTATE -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/69/69524.png" class="inv-icon">
+            <div>
+                <p>Real Estate</p>
+                <small>Property</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$1,200.00</p>
+            <small class="profit">+5.2%</small>
+        </div>
+    </div>
+
+    <!-- STARTUP -->
+    <div class="investment-item">
+        <div class="left">
+            <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" class="inv-icon">
+            <div>
+                <p>Startup Fund</p>
+                <small>Private Equity</small>
+            </div>
+        </div>
+        <div class="right">
+            <p>$890.00</p>
+            <small class="profit">+6.4%</small>
+        </div>
+    </div>
+
+</div>
+
+<!-- INVESTMENT SECTION -->
+<div id="investmentSection" style="display:none; margin-top:20px;">
+
+    <button onclick="goHome()">← Back</button>
+    <div class="investment">
+        <h3>Investment Account</h3>
+        <p>$12,450.00</p>
+    </div>
+
+    <div class="history">
+        <h3>Investment Transactions</h3>
+
+        {% for t in transactions[:3] %}
+        <div class="tx">
+            <span>{{ t.receiver_name }}</span>
+            <span class="{{ 'debit' if t.transaction_type=='debit' else 'credit' }}">
+                ${{ "{:,.2f}".format(t.amount or 0) }}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+<script>
+function showReceive(){
+    document.getElementById("receiveBox").style.display="flex";
+}
+function closeReceive(){
+    document.getElementById("receiveBox").style.display="none";
+}
+function showLoader(){
+    document.getElementById("loader").style.display="flex";
+}
+function filterTx(type){
+    let items=document.querySelectorAll(".tx");
+    let now=new Date();
+    items.forEach(tx=>{
+        let d=new Date(tx.dataset.date);
+        if(type==="today"){
+            tx.style.display=(d.toDateString()===now.toDateString())?"flex":"none";
+        }else if(type==="week"){
+            let diff=(now-d)/(1000*60*60*24);
+            tx.style.display=(diff<=7)?"flex":"none";
+        }else{
+            tx.style.display="flex";
+        }
+    });
+}
+function goToPage(page){
+    document.querySelector(".page-1").style.display=(page===1)?"flex":"none";
+    document.querySelector(".page-2").style.display=(page===2)?"flex":"none";
+}
+function showInvestment(){
+    document.querySelector(".page-1").style.display = "none";
+    document.getElementById("investmentSection").style.display = "block";
+}
+function goHome(){
+    document.querySelector(".page-1").style.display = "flex";
+    document.getElementById("investmentSection").style.display = "none";
+}
+
+</script>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <a href="/dashboard">🏠<br>Home</a>
+    <a href="/invest">📈<br>Invest</a>
+    <a href="/transactions">📄<br>History</a>
+    <a href="/settings">⚙️<br>Settings</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Successful</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+}
+
+/* LOADER */
+#loader{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#020617;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+    font-size:18px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:420px;
+    margin:auto;
+    padding:20px;
+}
+
+/* CARD */
+.success-card{
+    background:#111827;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+    text-align:center;
+    display:none;
+}
+
+/* ICON */
+.check{
+    width:70px;
+    height:70px;
+    background:#22c55e;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    margin:0 auto 15px;
+}
+
+/* TITLE */
+h2{
+    margin:10px 0 5px;
+}
+
+.sub{
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* DETAILS */
+.details{
+    text-align:left;
+    margin-top:20px;
+    background:#020617;
+    padding:15px;
+    border-radius:12px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+    font-size:13px;
+    border-bottom:1px solid #1f2937;
+    padding-bottom:6px;
+}
+
+/* BUTTONS */
+.btn{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+}
+
+/* DOWNLOAD */
+.download{
+    background:#22c55e;
+    color:white;
+}
+
+.download:hover{
+    background:#16a34a;
+}
+
+/* DASHBOARD */
+.home{
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    display:block;
+    text-align:center;
+}
+
+.home:hover{
+    background:#1d4ed8;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+.header span{
+    color:#facc15;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loader">Processing Transaction...</div>
+
+<div class="container">
+
+    <div class="header">Unity<span>Bank</span></div>
+
+    <div class="success-card" id="card">
+
+        <div class="check">✔</div>
+
+        <h2>Transaction Successful</h2>
+        <div class="sub">Your transfer was completed successfully</div>
+
+        <div class="details" id="receipt">
+
+            <div class="row"><span>Sender</span><span id="sender">{{ sender }}</span></div>
+            <div class="row"><span>Receiver</span><span id="receiver">{{ receiver }}</span></div>
+            <div class="row"><span>Bank</span><span id="bank">{{ bank }}</span></div>
+            <div class="row"><span>Amount</span><span id="amount">${{ "{:,.2f}".format(amount) }}</span></div>
+            <div class="row"><span>Date</span><span id="date">{{ date }}</span></div>
+            <div class="row"><span>Reference</span><span id="ref">{{ reference }}</span></div>
+            <div class="row"><span>Status</span><span style="color:#22c55e;">Completed</span></div>
+
+        </div>
+
+        <button class="btn download" onclick="downloadPDF()">
+            Download Receipt
+        </button>
+
+        <a href="{{ url_for('dashboard') }}" class="btn home">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+/* LOADER */
+setTimeout(()=>{
+    document.getElementById("loader").style.display="none";
+    document.getElementById("card").style.display="block";
+}, 1800);
+
+
+/* PDF DOWNLOAD */
+function downloadPDF(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("UnityBank Receipt", 20, 20);
+
+    doc.setFontSize(12);
+    doc.text("Sender: " + document.getElementById("sender").innerText, 20, 40);
+    doc.text("Receiver: " + document.getElementById("receiver").innerText, 20, 50);
+    doc.text("Bank: " + document.getElementById("bank").innerText, 20, 60);
+    doc.text("Amount: " + document.getElementById("amount").innerText, 20, 70);
+    doc.text("Date: " + document.getElementById("date").innerText, 20, 80);
+    doc.text("Reference: " + document.getElementById("ref").innerText, 20, 90);
+    doc.text("Status: Completed", 20, 100);
+
+    doc.save("UnityBank_Receipt.pdf");
+}
+
+</script>
+
+</body>
+</html>

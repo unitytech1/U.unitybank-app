@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Transfer</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+
+/* CONTAINER */
+.container{
+    width:100%;
+    max-width:420px;
+    padding:20px;
+}
+
+/* CARD */
+.card{
+    background:#111827;
+    padding:30px 25px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+}
+
+/* LOGO */
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+.logo span{
+    color:#facc15;
+}
+
+/* ICON */
+.icon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+/* TITLE */
+.title{
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* SUBTEXT */
+.sub{
+    font-size:13px;
+    color:#94a3b8;
+    margin:10px 0 25px;
+}
+
+/* OTP INPUT */
+.otp-input{
+    width:100%;
+    padding:18px;
+    font-size:26px;
+    letter-spacing:12px;
+    text-align:center;
+    border-radius:12px;
+    border:none;
+    background:#020617;
+    color:white;
+    margin-bottom:20px;
+}
+
+/* INPUT FOCUS */
+.otp-input:focus{
+    outline:none;
+    box-shadow:0 0 0 2px #22c55e;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#22c55e;
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.btn:hover{
+    background:#16a34a;
+}
+
+/* ERROR */
+.error-box{
+    background:#7f1d1d;
+    color:#fecaca;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:15px;
+    font-size:13px;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:15px;
+    font-size:11px;
+    color:#64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="logo">Unity<span>Bank</span></div>
+
+        <div class="icon">🛡️</div>
+
+        <div class="title">Authorization Required</div>
+        <div class="sub">
+            Enter the 6-digit code sent to your email to complete this transfer
+        </div>
+
+        <!-- FLASH MESSAGE -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="error-box">
+                {{ messages[0] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('verify_transfer') }}">
+
+            <input 
+                type="text"
+                name="otp"
+                class="otp-input"
+                placeholder="••••••"
+                maxlength="6"
+                pattern="\d{6}"
+                required
+                autocomplete="off"
+            >
+
+            <button type="submit" class="btn">
+                Confirm & Authorize
+            </button>
+
+        </form>
+
+        <div class="footer">
+            Never share your OTP with anyone
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

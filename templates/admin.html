@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:#0f172a;
+    color:white;
+}
+
+/* HEADER */
+.header{
+    padding:20px;
+    font-size:22px;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* STATS */
+.stats{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:18px;
+    color:#22c55e;
+}
+
+/* TABLE */
+.table{
+    width:95%;
+    margin:auto;
+    border-collapse:collapse;
+}
+
+.table th, .table td{
+    padding:12px;
+    text-align:left;
+    border-bottom:1px solid #1f2937;
+}
+
+.table th{
+    color:#9ca3af;
+    font-size:14px;
+}
+
+.table tr:hover{
+    background:#1e293b;
+}
+
+/* STATUS */
+.active{
+    color:#22c55e;
+}
+
+.blocked{
+    color:#ef4444;
+}
+
+/* BUTTON */
+.btn{
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.block{
+    background:#ef4444;
+    color:white;
+}
+
+.unblock{
+    background:#22c55e;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🏦 UnityBank Admin Dashboard</div>
+
+<div class="stats">
+    Total Users: {{ total_users }}
+</div>
+
+<table class="table">
+
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Balance</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for user in users %}
+<tr>
+    <td>{{ user.full_name }}</td>
+    <td>{{ user.email }}</td>
+    <td>${{ "{:,.2f}".format(user.balance) }}</td>
+
+    <td>
+        {% if user.is_blocked %}
+            <span class="blocked">Blocked</span>
+        {% else %}
+            <span class="active">Active</span>
+        {% endif %}
+    </td>
+
+    <td>
+        <a href="{{ url_for('toggle_block', user_id=user.id) }}">
+            {% if user.is_blocked %}
+                <button class="btn unblock">Unblock</button>
+            {% else %}
+                <button class="btn block">Block</button>
+            {% endif %}
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

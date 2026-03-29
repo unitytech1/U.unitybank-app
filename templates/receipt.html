@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Receipt - Unity Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .receipt-card { background: #fff; width: 100%; max-width: 400px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid #27ae60; text-align: center; }
+        .success-icon { font-size: 50px; color: #27ae60; margin-bottom: 15px; }
+        .amount { font-size: 2rem; font-weight: bold; color: #333; margin: 10px 0; }
+        .details-table { width: 100%; margin-top: 20px; border-collapse: collapse; text-align: left; }
+        .details-table td { padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        .label { color: #888; }
+        .value { color: #333; font-weight: 600; text-align: right; }
+        .btn-print { margin-top: 25px; width: 100%; padding: 12px; background: #002d72; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .back-home { display: block; margin-top: 15px; color: #b8860b; text-decoration: none; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="receipt-card">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2 style="margin:0;">Transfer Successful</h2>
+        <div class="amount">${{ "{:,.2f}".format(data.amount) }}</div>
+        
+        <table class="details-table">
+            <tr><td class="label">Reference:</td><td class="value">UB-{{ data.ref }}</td></tr>
+            <tr><td class="label">Recipient:</td><td class="value">{{ data.receiver }}</td></tr>
+            <tr><td class="label">Bank:</td><td class="value">{{ data.bank }}</td></tr>
+            <tr><td class="label">Account:</td><td class="value">****{{ data.account[-4:] }}</td></tr>
+            <tr><td class="label">Date:</td><td class="value">March 22, 2026</td></tr>
+        </table>
+
+        <button class="btn-print" onclick="window.print()">Print Receipt</button>
+        <a href="{{ url_for('dashboard') }}" class="back-home">Return to Dashboard</a>
+    </div>
+</body>
+</html>

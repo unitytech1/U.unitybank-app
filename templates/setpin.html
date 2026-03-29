@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Set Transfer PIN</title>
+<style>
+body{
+    background:#020617;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:'Segoe UI';
+}
+.card{
+    background:#111827;
+    padding:30px;
+    border-radius:15px;
+    width:300px;
+    text-align:center;
+}
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+}
+button{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    background:#22c55e;
+    border:none;
+    border-radius:10px;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h3>Set Transfer PIN</h3>
+
+    <form method="POST">
+        <input type="password" name="pin" placeholder="Enter 4-digit PIN" required>
+        <button>Save PIN</button>
+    </form>
+</div>
+
+</body>
+</html>

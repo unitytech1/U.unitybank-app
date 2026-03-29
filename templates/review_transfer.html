@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+    font-family:'Segoe UI';
+    padding:15px;
+}
+
+.card{
+    background:#111827;
+    padding:20px;
+    border-radius:20px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin:12px 0;
+}
+
+.label{opacity:0.6;}
+.value{font-weight:bold;}
+
+.btn{
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#22c55e;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Review Transfer</h2>
+
+<div class="card">
+
+    <div class="row"><span class="label">Bank</span><span class="value">{{ bank }}</span></div>
+    <div class="row"><span class="label">Account</span><span class="value">{{ account }}</span></div>
+    <div class="row"><span class="label">Name</span><span class="value">{{ receiver }}</span></div>
+
+    {% if address %}
+    <div class="row"><span class="label">Address</span><span class="value">{{ address }}</span></div>
+    {% endif %}
+
+    <div class="row"><span class="label">Amount</span><span class="value">${{ amount }}</span></div>
+
+    <form method="POST" action="/go_to_pin">
+        <button class="btn">Continue</button>
+    </form>
+
+</div>
+
+</body>
+</html>

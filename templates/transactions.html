@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction History</title>
+
+<style>
+
+/* BODY */
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+}
+.month-title{
+    margin:20px 0 10px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* MAIN */
+.main{
+    padding:15px;
+    padding-bottom:80px;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.back{
+    background:#1f2937;
+    padding:6px 10px;
+    border-radius:8px;
+    margin-right:10px;
+    text-decoration:none;
+    color:white;
+}
+
+/* CARD */
+.history-box{
+    background:#111827;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* ROW */
+.tx{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid #1f2937;
+}
+
+.tx:last-child{
+    border-bottom:none;
+}
+
+/* LEFT */
+.tx-left{
+    display:flex;
+    flex-direction:column;
+}
+
+.tx-name{
+    font-size:14px;
+}
+
+.tx-date{
+    font-size:11px;
+    opacity:0.6;
+}
+
+/* RIGHT */
+.tx-amount{
+    font-size:14px;
+    font-weight:500;
+}
+
+.credit{
+    color:#22c55e;
+}
+
+.debit{
+    color:#ef4444;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#020617;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    border-top:1px solid #1f2937;
+}
+
+.bottom-nav a{
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:12px;
+    text-align:center;
+}
+
+.bottom-nav a:hover{
+    color:#22c55e;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+        <a href="/dashboard" class="back">←</a>
+        <h2>Transaction History</h2>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history-box">
+
+      {% for month, items in grouped.items() %}
+
+    <!-- MONTH TITLE -->
+   <div class="month-title">{{ month }}</div>
+   
+    {% for tx in items %}
+    <div class="tx">
+        <div class="tx-left">
+            <div class="tx-name">{{ tx.name }}</div>
+            <div class="tx-date">{{ tx.date }}</div>
+        </div>
+
+        <div class="tx-amount 
+            {% if tx.type == 'credit' %} credit {% else %} debit {% endif %}
+        ">
+            {% if tx.type == 'credit' %}
+                +${{ tx.amount }}
+            {% else %}
+                -${{ tx.amount }}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+{% endfor %}
+        
+    </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <a href="/dashboard">🏠<br>Home</a>
+    <a href="/invest">📈<br>Invest</a>
+    <a href="/transactions">📄<br>History</a>
+    <a href="/settings">⚙️<br>Settings</a>
+</div>
+
+</body>
+</html>

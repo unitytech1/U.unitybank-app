@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8"><!-- ✅ FIXED VIEWPORT (no zoom issue) --><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Login - UnityBank</title><style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+
+/* CARD */
+.card{
+    background:#111827;
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:350px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.6);
+    border:1px solid #1f2937;
+}
+
+/* LOGO */
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.logo span{
+    color:#b8860b;
+}
+
+/* TITLE */
+.title{
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+/* INPUT */
+.input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border-radius:10px;
+    border:1px solid #374151;
+    background:#020617;
+    color:white;
+    outline:none;
+
+    /* 🔥 CRITICAL FIX */
+    font-size:16px;
+}
+
+/* INPUT FOCUS */
+.input:focus{
+    border-color:#b8860b;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#b8860b;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+
+    /* match input */
+    font-size:16px;
+}
+
+.btn:hover{
+    background:#966d09;
+}
+
+/* REGISTER LINK */
+.register{
+    margin-top:15px;
+    font-size:13px;
+    color:#9ca3af;
+}
+
+.register a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.register a:hover{
+    text-decoration:underline;
+}
+
+/* ERROR */
+.error{
+    background:#7f1d1d;
+    color:#fecaca;
+    padding:10px;
+    border-radius:6px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+/* FIX MOBILE HEIGHT ISSUES */
+html, body {
+    height:100%;
+    overflow-x:hidden;
+}
+
+</style></head><body><div class="card"><div class="logo">Unity<span>Bank</span></div>
+<div class="title">Login to your account</div>
+
+<!-- FLASH MESSAGE -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="error">{{ messages[0] }}</div>
+  {% endif %}
+{% endwith %}
+
+<form method="POST">
+
+    <input type="email" name="email" placeholder="Email Address" class="input" required>
+
+    <input type="password" name="password" placeholder="Password" class="input" required>
+
+    <button type="submit" class="btn">Login</button>
+
+</form>
+
+<div class="register">
+    Don’t have an account?
+    <a href="{{ url_for('register') }}">Create one</a>
+</div>
+
+</div></body>
+</html>

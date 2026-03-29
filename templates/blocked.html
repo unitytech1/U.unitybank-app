@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Blocked</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+    max-width:400px;
+    padding:20px;
+}
+
+.icon{
+    font-size:50px;
+    color:#ef4444;
+    margin-bottom:15px;
+}
+
+.title{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.text{
+    color:#9ca3af;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#22c55e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="icon">🚫</div>
+
+    <div class="title">Account Blocked</div>
+
+    <div class="text">
+        This account has been blocked for suspicious activities.<br><br>
+        You must visit our branch to reopen your account.
+    </div>
+
+    <a href="{{ url_for('support') }}">
+    <button class="btn">Contact Customer Care</button>
+</a>
+</div>
+
+</body>
+</html>

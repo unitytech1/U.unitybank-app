@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment</title>
+
+<style>
+
+/* BODY */
+body{
+    margin:0;
+    font-family:'Segoe UI';
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+}
+
+/* MAIN */
+.main{
+    padding:15px;
+    padding-bottom:80px;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+/* 🔥 NEW INVEST CARD */
+.invest-card{
+    background:#111827;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.invest-title{
+    font-size:14px;
+    opacity:0.7;
+}
+
+.invest-balance{
+    font-size:28px;
+    margin:10px 0 20px;
+}
+
+/* STATS INSIDE CARD */
+.invest-stats{
+    display:flex;
+    gap:10px;
+}
+
+.stat-box{
+    flex:1;
+    background:#1f2937;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.stat-box small{
+    opacity:0.7;
+    font-size:12px;
+}
+
+.stat-box h3{
+    margin-top:5px;
+    font-size:16px;
+}
+
+.green{
+    color:#22c55e;
+}
+
+/* PORTFOLIO */
+.history{
+    background:#0f172a;
+    padding:15px;
+    border-radius:16px;
+}
+
+.tx{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #1f2937;
+}
+
+.tx:last-child{
+    border-bottom:none;
+}
+
+/* LEFT SIDE */
+.tx-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* ICON */
+.inv-icon{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#1e293b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+}
+
+/* RIGHT SIDE */
+.tx-right{
+    text-align:right;
+}
+
+.profit{
+    color:#22c55e;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#020617;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    border-top:1px solid #1f2937;
+}
+
+.bottom-nav a{
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:12px;
+    text-align:center;
+}
+
+.bottom-nav a:hover{
+    color:#22c55e;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>Investments</h2>
+    </div>
+
+    <!-- ✅ NEW PROFESSIONAL CARD -->
+    <div class="invest-card">
+
+        <div class="invest-title">Investment Account</div>
+
+        <div class="invest-balance">
+            $12,450.00
+        </div>
+
+        <div class="invest-stats">
+
+            <div class="stat-box">
+                <small>Total Invested</small>
+                <h3>$10,000</h3>
+            </div>
+
+            <div class="stat-box">
+                <small>Profit</small>
+                <h3 class="green">+$2,450</h3>
+            </div>
+
+            <div class="stat-box">
+                <small>Growth</small>
+                <h3 class="green">+24.5%</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="history">
+        <h3>Investments Portfolio</h3>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">🍎</div>
+                <div>
+                    <strong>Apple</strong>
+                    <small>Stocks</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$129.89</div>
+                <small class="profit">+3.5%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">🚗</div>
+                <div>
+                    <strong>Tesla</strong>
+                    <small>Stocks</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$300.45</div>
+                <small class="profit">+4.1%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">₿</div>
+                <div>
+                    <strong>Bitcoin</strong>
+                    <small>Crypto</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$210.93</div>
+                <small class="profit">+1.2%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">💎</div>
+                <div>
+                    <strong>Ethereum</strong>
+                    <small>Crypto</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$180.22</div>
+                <small class="profit">+2.3%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">🏠</div>
+                <div>
+                    <strong>Real Estate</strong>
+                    <small>Property</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$1,000.00</div>
+                <small class="profit">+6.2%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">📊</div>
+                <div>
+                    <strong>Index Fund</strong>
+                    <small>Fund</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$500.00</div>
+                <small class="profit">+5.0%</small>
+            </div>
+        </div>
+
+        <div class="tx">
+            <div class="tx-left">
+                <div class="inv-icon">💰</div>
+                <div>
+                    <strong>Dividend Stocks</strong>
+                    <small>Income</small>
+                </div>
+            </div>
+            <div class="tx-right">
+                <div>$250.00</div>
+                <small class="profit">+2.0%</small>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <a href="/dashboard">🏠<br>Home</a>
+    <a href="/invest">📈<br>Invest</a>
+    <a href="/transactions">📄<br>History</a>
+    <a href="/settings">⚙️<br>Settings</a>
+</div>
+
+</body>
+</html>
