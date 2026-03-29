@@ -216,34 +216,35 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
 
-        # ✅ CHECK IF USER EXISTS FIRST
+        # ✅ CHECK IF USER EXISTS
         if user:
 
             # ✅ BLOCK CHECK
             if user.is_blocked:
                 return redirect(url_for('blocked'))
-                print("IS ADMIN:", user.is_admin)
-
-                login_user(user)
 
             # ✅ PASSWORD CHECK
             if check_password_hash(user.password, request.form.get('password')):
-                login_user(user)
 
+                # 🔥 SET ADMIN PROPERLY
                 if user.email == "j99310482@gmail.com":
                     user.is_admin = True
-                     else:
-                     user.is_admin = False
+                else:
+                    user.is_admin = False
 
-                      db.session.commit()
+                db.session.commit()
 
-                # ✅ ADMIN REDIRECT
+                login_user(user)
+
+                print("IS ADMIN:", user.is_admin)  # DEBUG
+
+                # 🔥 CORRECT REDIRECT
                 if user.is_admin:
                     return redirect(url_for('admin'))
+                else:
+                    return redirect(url_for('dashboard'))
 
-                return redirect(url_for('dashboard'))
-
-        # ❌ IF USER DOES NOT EXIST OR PASSWORD WRONG
+        # ❌ LOGIN FAILED
         flash('Login failed. Check your details.')
 
     return render_template('login.html')
