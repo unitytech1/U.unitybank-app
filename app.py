@@ -26,8 +26,6 @@ app.config['REMEMBER_COOKIE_SECURE']= False
 # Ensure folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-
 # EMAIL CONFIG
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -142,9 +140,7 @@ def generate_fake_transactions(user):
 
     db.session.add_all(transactions)
     db.session.commit()
-
-    
-
+ 
 # =========================
 # OPTIONAL: RANDOM CREDIT
 # =========================
@@ -497,7 +493,9 @@ def change_password():
 @app.route('/confirm_pin', methods=['GET', 'POST'])
 @login_required
 def confirm_pin():
+
     if request.method == 'POST':
+
         entered_pin = request.form.get('pin')
 
         if entered_pin != current_user.transfer_pin:
@@ -510,7 +508,7 @@ def confirm_pin():
 
         print("OTP:", otp)
 
-        # Send email safely
+        # ✅ SAFE EMAIL (WILL NOT CRASH)
         try:
             msg = Message(
                 "UnityBank OTP Code",
@@ -519,10 +517,9 @@ def confirm_pin():
             msg.body = f"Your OTP code is: {otp}"
             mail.send(msg)
         except Exception as e:
-            print("Mail Error:", e)
+            print("MAIL ERROR:", e)
 
-        print("Redirecting to OTP page...")
-        
+        # ALWAYS CONTINUE
         return redirect(url_for('verify_transfer'))
 
     return render_template('enter_pin.html')
