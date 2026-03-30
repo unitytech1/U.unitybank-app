@@ -510,6 +510,18 @@ def confirm_pin():
 
         print("OTP:", otp)
 
+<<<<<<< HEAD
+        # ✅ SAFE EMAIL (WILL NOT CRASH)
+        try:
+            msg = Message(
+                "UnityBank OTP Code",
+                recipients=[current_user.email]
+            )
+            msg.body = f"Your OTP code is: {otp}"
+            mail.send(msg)
+        except Exception as e:
+            print("MAIL ERROR:", e)
+=======
         # Send email safely
         try:
             msg = Message(
@@ -521,6 +533,9 @@ def confirm_pin():
         except Exception as e:
             print("Mail Error:", e)
 
+<<<<<<< HEAD
+        # ALWAYS CONTINUE
+=======
         print("Redirecting to OTP page...")
         
         return redirect(url_for('verify_transfer'))
