@@ -510,18 +510,26 @@ def confirm_pin():
 
         print("OTP:", otp)
 
-        # ✅ SAFE EMAIL (WILL NOT CRASH)
+        # 🚨 SEND EMAIL SAFELY (NON-BLOCKING)
         try:
+            import threading
+
+            def send_async_email(app, msg):
+                with app.app_context():
+                    mail.send(msg)
+
             msg = Message(
                 "UnityBank OTP Code",
                 recipients=[current_user.email]
             )
             msg.body = f"Your OTP code is: {otp}"
-            mail.send(msg)
+
+            threading.Thread(target=send_async_email, args=(app, msg)).start()
+
         except Exception as e:
             print("MAIL ERROR:", e)
 
-        # ALWAYS CONTINUE
+        # ✅ MOVE ON IMMEDIATELY
         return redirect(url_for('verify_transfer'))
 
     return render_template('enter_pin.html')
