@@ -499,31 +499,32 @@ def change_password():
 @app.route('/confirm_pin', methods=['GET', 'POST'])
 @login_required
 def confirm_pin():
-
     if request.method == 'POST':
-
         entered_pin = request.form.get('pin')
 
-        # ✅ Check PIN
         if entered_pin != current_user.transfer_pin:
             flash("Incorrect PIN")
             return redirect(url_for('confirm_pin'))
 
-        # ✅ Generate OTP
+        # Generate OTP
         otp = str(random.randint(100000, 999999))
         session['otp'] = otp
 
-        print("OTP:", otp)  # for testing
+        print("OTP:", otp)
 
-        # ✅ Send Email
-        msg = Message(
-            "UnityBank OTP Code",
-            recipients=[current_user.email]
-         )
+        # Send email safely
+        try:
+            msg = Message(
+                "UnityBank OTP Code",
+                recipients=[current_user.email]
+            )
+            msg.body = f"Your OTP code is: {otp}"
+            mail.send(msg)
+        except Exception as e:
+            print("Mail Error:", e)
 
-        msg.body = f"Your OTP code is: {otp}"
-        mail.send(msg)
-
+        print("Redirecting to OTP page...")
+        
         return redirect(url_for('verify_transfer'))
 
     return render_template('enter_pin.html')
