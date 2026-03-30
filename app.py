@@ -26,8 +26,6 @@ app.config['REMEMBER_COOKIE_SECURE']= False
 # Ensure folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-
 # EMAIL CONFIG
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
