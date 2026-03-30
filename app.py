@@ -33,10 +33,10 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USERNAME'] = 
-os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] =
-os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USERNAME'] =
+os.enviro.get('MAIL_USANAME')
+app.config['MAIL_PASSWORD'] = 
+os.enviro.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = ('UnityBank', 'j99310482@gmail.com')  
 
 # INIT
@@ -216,27 +216,35 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
 
-        # ✅ CHECK IF USER EXISTS FIRST
+        # ✅ CHECK IF USER EXISTS
         if user:
 
             # ✅ BLOCK CHECK
             if user.is_blocked:
                 return redirect(url_for('blocked'))
-                print("IS ADMIN:", user.is_admin)
-
-                login_user(user)
 
             # ✅ PASSWORD CHECK
             if check_password_hash(user.password, request.form.get('password')):
+
+                # 🔥 SET ADMIN PROPERLY
+                if user.email == "j99310482@gmail.com":
+                    user.is_admin = True
+                else:
+                    user.is_admin = False
+
+                db.session.commit()
+
                 login_user(user)
 
-                # ✅ ADMIN REDIRECT
+                print("IS ADMIN:", user.is_admin)  # DEBUG
+
+                # 🔥 CORRECT REDIRECT
                 if user.is_admin:
                     return redirect(url_for('admin'))
+                else:
+                    return redirect(url_for('dashboard'))
 
-                return redirect(url_for('dashboard'))
-
-        # ❌ IF USER DOES NOT EXIST OR PASSWORD WRONG
+        # ❌ LOGIN FAILED
         flash('Login failed. Check your details.')
 
     return render_template('login.html')
@@ -491,31 +499,32 @@ def change_password():
 @app.route('/confirm_pin', methods=['GET', 'POST'])
 @login_required
 def confirm_pin():
-
     if request.method == 'POST':
-
         entered_pin = request.form.get('pin')
 
-        # ✅ Check PIN
         if entered_pin != current_user.transfer_pin:
             flash("Incorrect PIN")
             return redirect(url_for('confirm_pin'))
 
-        # ✅ Generate OTP
+        # Generate OTP
         otp = str(random.randint(100000, 999999))
         session['otp'] = otp
 
-        print("OTP:", otp)  # for testing
+        print("OTP:", otp)
 
-        # ✅ Send Email
-        msg = Message(
-            "UnityBank OTP Code",
-            recipients=[current_user.email]
-         )
+        # Send email safely
+        try:
+            msg = Message(
+                "UnityBank OTP Code",
+                recipients=[current_user.email]
+            )
+            msg.body = f"Your OTP code is: {otp}"
+            mail.send(msg)
+        except Exception as e:
+            print("Mail Error:", e)
 
-        msg.body = f"Your OTP code is: {otp}"
-        mail.send(msg)
-
+        print("Redirecting to OTP page...")
+        
         return redirect(url_for('verify_transfer'))
 
     return render_template('enter_pin.html')
