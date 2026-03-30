@@ -140,9 +140,7 @@ def generate_fake_transactions(user):
 
     db.session.add_all(transactions)
     db.session.commit()
-
-    
-
+ 
 # =========================
 # OPTIONAL: RANDOM CREDIT
 # =========================
