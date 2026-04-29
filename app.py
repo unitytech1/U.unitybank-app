@@ -513,8 +513,8 @@ def confirm_pin():
             recipients=[current_user.email]
          )
 
-        msg.body = f"Your OTP code is: {otp}"
-        mail.send(msg)
+        msg.body = "Your OTP has been sent"
+        #mail.send(msg)
 
         return redirect(url_for('verify_transfer'))
 
