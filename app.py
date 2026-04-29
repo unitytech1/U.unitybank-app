@@ -510,8 +510,8 @@ def confirm_pin():
 
         print("OTP:", otp)
 
-        # ✅ SHOW OTP INSTEAD OF EMAIL
-        flash(f"Your OTP is {otp}")
+        msg.body = "Your OTP has been sent"
+        #mail.send(msg)
 
         return redirect(url_for('verify_transfer'))
 
