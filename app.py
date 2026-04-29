@@ -26,18 +26,16 @@ app.config['REMEMBER_COOKIE_SECURE']= False
 # Ensure folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-
 # EMAIL CONFIG
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USERNAME'] = 'j99310482@gmail.com'
-os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = 'pfblqitewcbapgiz'
-os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = ('UnityBank', 'j99310482@gmail.com')  
+
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+app.config['MAIL_DEFAULT_SENDER'] = ('UnityBank', app.config['MAIL_USERNAME'])
 
 # INIT
 db = SQLAlchemy(app)
@@ -144,9 +142,7 @@ def generate_fake_transactions(user):
 
     db.session.add_all(transactions)
     db.session.commit()
-
-    
-
+ 
 # =========================
 # OPTIONAL: RANDOM CREDIT
 # =========================
@@ -216,27 +212,35 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
 
-        # ✅ CHECK IF USER EXISTS FIRST
+        # ✅ CHECK IF USER EXISTS
         if user:
 
             # ✅ BLOCK CHECK
             if user.is_blocked:
                 return redirect(url_for('blocked'))
-                print("IS ADMIN:", user.is_admin)
-
-                login_user(user)
 
             # ✅ PASSWORD CHECK
             if check_password_hash(user.password, request.form.get('password')):
+
+                # 🔥 SET ADMIN PROPERLY
+                if user.email == "j99310482@gmail.com":
+                    user.is_admin = True
+                else:
+                    user.is_admin = False
+
+                db.session.commit()
+
                 login_user(user)
 
-                # ✅ ADMIN REDIRECT
+                print("IS ADMIN:", user.is_admin)  # DEBUG
+
+                # 🔥 CORRECT REDIRECT
                 if user.is_admin:
                     return redirect(url_for('admin'))
+                else:
+                    return redirect(url_for('dashboard'))
 
-                return redirect(url_for('dashboard'))
-
-        # ❌ IF USER DOES NOT EXIST OR PASSWORD WRONG
+        # ❌ LOGIN FAILED
         flash('Login failed. Check your details.')
 
     return render_template('login.html')
@@ -496,22 +500,15 @@ def confirm_pin():
 
         entered_pin = request.form.get('pin')
 
-        # ✅ Check PIN
         if entered_pin != current_user.transfer_pin:
             flash("Incorrect PIN")
             return redirect(url_for('confirm_pin'))
 
-        # ✅ Generate OTP
+        # Generate OTP
         otp = str(random.randint(100000, 999999))
         session['otp'] = otp
 
-        print("OTP:", otp)  # for testing
-
-        # ✅ Send Email
-        msg = Message(
-            "UnityBank OTP Code",
-            recipients=[current_user.email]
-         )
+        print("OTP:", otp)
 
         msg.body = "Your OTP has been sent"
         #mail.send(msg)
@@ -621,4 +618,4 @@ def support():
     return render_template('support.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
