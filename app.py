@@ -510,8 +510,8 @@ def confirm_pin():
 
         print("OTP:", otp)
 
-        #msg.body = "Your OTP has been sent"
-        #mail.send(msg)
+        msg.body = "Your OTP has been sent"
+        mail.send(msg)
 
         return redirect(url_for('verify_transfer'))
 
