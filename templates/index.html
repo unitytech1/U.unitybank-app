@@ -14,28 +14,32 @@
         box-sizing:border-box;
     }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #020617);
-    color: white;
-    min-height: 100dvh;           /* This is key */
-    display: flex;
-    flex-direction: column;
-}
+    /* BODY */
+    body{
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background:linear-gradient(135deg,#0f172a,#020617);
+        color:white;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100dvh;
+        margin: 0;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 
-/* Main content wrapper - Add this class to your main div */
-.main-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    padding-bottom: max(80px, env(safe-area-inset-bottom) + 30px); /* Prevents bottom bar */
-}
+    /* CONTAINER */
+    .container{
+        width:100%;
+        max-width:400px;
+        text-align:center;
+        padding:20px;
+        padding-bottom: max(30px, env(safe-area-inset-bottom) + 20px);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
 
 
 /* LOGO */
