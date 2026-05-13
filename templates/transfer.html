@@ -6,28 +6,21 @@
     <title>Unity Bank - Make a Transfer</title>
 <style>
 *{
-    box-sizing:border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* =========================
-   BODY - MAIN FIX HERE
-========================= */
+/* BODY */
 body {
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg,#0f172a,#020617);
     color: white;
-    min-height: 100dvh;           /* Important fix */
-    display: flex;
-    flex-direction: column;
-    margin: 0;
+    min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 .header {
     padding: 16px;
     text-align: center;
@@ -39,34 +32,24 @@ body {
     color: #facc15;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/* CONTAINER */
 .container {
-    flex: 1;                      /* This pushes content to fill screen */
     max-width: 420px;
     margin: 0 auto;
     padding: 15px;
-    display: flex;
-    flex-direction: column;
+    min-height: calc(100dvh - 70px);   /* Adjust for header */
 }
 
-/* =========================
-   CARD
-========================= */
+/* CARD - This is the key fix */
 .card {
     background: #111827;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    flex: 1;                      /* Allows card to expand */
-    display: flex;
-    flex-direction: column;
+    min-height: 85vh;                    /* Forces card to be tall */
 }
 
-/* =========================
-   TEXT
-========================= */
+/* TEXT */
 h2 {
     text-align: center;
     margin-bottom: 5px;
@@ -84,9 +67,7 @@ h2 {
     color: #22c55e;
 }
 
-/* =========================
-   FORM GROUP
-========================= */
+/* FORM */
 .form-group {
     margin-bottom: 14px;
 }
@@ -98,9 +79,6 @@ h2 {
     color: #d1d5db;
 }
 
-/* =========================
-   INPUT
-========================= */
 .form-group input {
     width: 100%;
     padding: 14px;
@@ -116,30 +94,18 @@ h2 {
     box-shadow: 0 0 0 2px #facc15;
 }
 
-/* =========================
-   BUTTON
-========================= */
 .btn {
     width: 100%;
     padding: 15px;
-    margin-top: auto;             /* Pushes button to bottom of card */
+    margin-top: 20px;
     background: #22c55e;
     border: none;
     border-radius: 12px;
     color: white;
     font-size: 16px;
     font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
-.btn:hover {
-    background: #16a34a;
-}
-
-/* =========================
-   BACK LINK
-========================= */
 .back {
     text-align: center;
     margin-top: 18px;
@@ -149,20 +115,10 @@ h2 {
     font-size: 14px;
 }
 
-.back:hover {
-    color: white;
-}
-
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
+/* Responsive */
 @media(max-width:480px){
-    .container{
-        padding:12px;
-    }
-    .card{
-        padding:18px;
-    }
+    .container { padding: 12px; }
+    .card { padding: 18px; min-height: 88vh; }
 }
 </style>
 </head>
