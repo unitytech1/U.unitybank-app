@@ -1,146 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>UnityBank - Smart Money Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>UnityBank - Smart Money Tracker</title>
 
-<style>
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* BODY */
-body{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background:linear-gradient(135deg,#0f172a,#020617);
-    color:white;
-    min-height: 100dvh;           /* Fixed */
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding: 20px 15px;
-}
+        /* BODY */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: white;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 15px;
+            overflow-x: hidden;
+        }
 
-/* CONTAINER */
-.container{
-    width:100%;
-    max-width:400px;
-    text-align:center;
-}
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 420px;           /* Slightly increased for better tablet feel */
+            text-align: center;
+        }
 
-/* LOGO */
-.logo{
-    font-size:26px;
-    font-weight:bold;
-    margin-bottom:20px;
-}
+        /* LOGO */
+        .logo {
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
 
-.logo span{
-    color:#b8860b;
-}
+        .logo span {
+            color: #b8860b;
+        }
 
-/* IMAGE */
-.illustration{
-    width:100%;
-    max-width:240px;
-    margin:20px auto;
-    display:block;
-}
+        /* IMAGE */
+        .illustration {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            margin: 20px auto 30px;
+            display: block;
+            object-fit: contain;
+        }
 
-/* TITLE */
-.title{
-    font-size:20px;
-    font-weight:bold;
-    margin-top:10px;
-}
+        /* TITLE */
+        .title {
+            font-size: clamp(20px, 4.5vw, 26px);
+            font-weight: bold;
+            margin-top: 10px;
+            line-height: 1.2;
+        }
 
-.sub{
-    font-size:14px;
-    color:#9ca3af;
-    margin:10px 0 25px;
-    line-height:1.5;
-}
+        .sub {
+            font-size: clamp(14px, 3.5vw, 16px);
+            color: #9ca3af;
+            margin: 12px 0 30px;
+            line-height: 1.6;
+        }
 
-/* BUTTON */
-.btn{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:30px;
-    background:#b8860b;
-    color:white;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-}
+        /* BUTTON */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 30px;
+            background: #b8860b;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(16px, 4vw, 18px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+        }
 
-.btn:hover{
-    background:#966d09;
-}
+        .btn:hover {
+            background: #966d09;
+            transform: translateY(-2px);
+        }
 
-/* LOGIN LINK */
-.login{
-    margin-top:20px;
-    font-size:14px;
-    color:#9ca3af;
-}
+        .btn:active {
+            transform: scale(0.98);
+        }
 
-.login a{
-    color:white;
-    text-decoration:none;
-    font-weight:bold;
-}
+        /* LOGIN LINK */
+        .login {
+            margin-top: 24px;
+            font-size: 15px;
+            color: #9ca3af;
+        }
 
-.login a:hover{
-    text-decoration:underline;
-}
+        .login a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-/* RESPONSIVE */
-@media(max-width:480px){
-    .title{ font-size:18px; }
-    .sub{ font-size:13px; }
-}
-</style>
+        .login a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE IMPROVEMENTS */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 480px;
+                padding: 0 20px;
+            }
+            
+            .illustration {
+                max-width: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 520px;
+            }
+            
+            body {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Extra safety for very small screens */
+        @media (max-width: 360px) {
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- LOGO -->
-    <div class="logo">Unity<span>Bank</span></div>
+        <!-- LOGO -->
+        <div class="logo">Unity<span>Bank</span></div>
 
-    <!-- IMAGE -->
-    <img 
-        src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" 
-        alt="Finance Illustration"
-        class="illustration"
-    >
+        <!-- IMAGE -->
+        <img 
+            src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" 
+            alt="Finance Illustration"
+            class="illustration"
+        >
 
-    <!-- TEXT -->
-    <div class="title">Track & Monitor Your Money</div>
+        <!-- TEXT -->
+        <div class="title">Track & Monitor Your Money</div>
 
-    <div class="sub">
-        We help you manage your finances, track transactions,
-        and stay in control of your money.
+        <div class="sub">
+            We help you manage your finances, track transactions,
+            and stay in control of your money.
+        </div>
+
+        <!-- BUTTON -->
+        <a href="{{ url_for('register') }}" class="btn-link" style="text-decoration: none;">
+            <button class="btn">Create Account</button>
+        </a>
+
+        <div class="login">
+            Already have an account? 
+            <a href="{{ url_for('login') }}">Log in</a>
+        </div>
+
     </div>
-
-    <!-- BUTTON -->
-    <a href="{{ url_for('register') }}" class="btn-link">
-        <button class="btn">Create Account</button>
-    </a>
-
-    <div class="login">
-        Already have an account?
-        <a href="{{ url_for('login') }}">Log in</a>
-    </div>
-
-</div>
 
 </body>
 </html>
