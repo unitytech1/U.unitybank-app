@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Unity Bank - Make a Transfer</title>
 <style>
 *{
     box-sizing:border-box;
+    margin: 0;
+    padding: 0;
 }
 
 /* =========================
-   BODY
+   BODY - MAIN FIX HERE
 ========================= */
 body {
-    margin: 0;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg,#0f172a,#020617);
     color: white;
+    min-height: 100dvh;           /* Important fix */
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* =========================
@@ -34,12 +40,15 @@ body {
 }
 
 /* =========================
-   CONTAINER (MOBILE PERFECT)
+   CONTAINER
 ========================= */
 .container {
+    flex: 1;                      /* This pushes content to fill screen */
     max-width: 420px;
-    margin: auto;
+    margin: 0 auto;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* =========================
@@ -50,6 +59,9 @@ body {
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    flex: 1;                      /* Allows card to expand */
+    display: flex;
+    flex-direction: column;
 }
 
 /* =========================
@@ -87,7 +99,7 @@ h2 {
 }
 
 /* =========================
-   INPUT (iPhone optimized)
+   INPUT
 ========================= */
 .form-group input {
     width: 100%;
@@ -96,10 +108,9 @@ h2 {
     border: none;
     background: #1f2937;
     color: white;
-    font-size: 16px; /* prevents zoom on iPhone */
+    font-size: 16px;
 }
 
-/* INPUT FOCUS */
 .form-group input:focus {
     outline: none;
     box-shadow: 0 0 0 2px #facc15;
@@ -111,7 +122,7 @@ h2 {
 .btn {
     width: 100%;
     padding: 15px;
-    margin-top: 15px;
+    margin-top: auto;             /* Pushes button to bottom of card */
     background: #22c55e;
     border: none;
     border-radius: 12px;
@@ -146,24 +157,11 @@ h2 {
    MOBILE RESPONSIVE
 ========================= */
 @media(max-width:480px){
-     .container{
+    .container{
         padding:12px;
     }
-
     .card{
         padding:18px;
-    }
-
-    h2{
-        font-size:18px;
-    }
-
-    .form-group input{
-        padding:13px;
-    }
-
-    .btn{
-        padding:14px;
     }
 }
 </style>
@@ -184,38 +182,39 @@ h2 {
                 <b>${{ "{:,.2f}".format(user.balance) }}</b>
             </div>
 
-  <form method="POST" action="{{ url_for('go_to_pin') }}">
+            <form method="POST" action="{{ url_for('go_to_pin') }}">
 
-    <div class="form-group">
-        <label>Bank</label>
-        <input type="text" name="bank" placeholder="Enter bank name" required>
-    </div>
+                <div class="form-group">
+                    <label>Bank</label>
+                    <input type="text" name="bank" placeholder="Enter bank name" required>
+                </div>
 
-    <div class="form-group">
-        <label>Account Number</label>
-        <input type="text" name="account_number" placeholder="Enter account number" required>
-    </div>
+                <div class="form-group">
+                    <label>Account Number</label>
+                    <input type="text" name="account_number" placeholder="Enter account number" required>
+                </div>
 
-    <div class="form-group">
-        <label>Receiver Name</label>
-        <input type="text" name="receiver_name" placeholder="Enter receiver name" required>
-    </div>
+                <div class="form-group">
+                    <label>Receiver Name</label>
+                    <input type="text" name="receiver_name" placeholder="Enter receiver name" required>
+                </div>
 
-    <div class="form-group">
-        <label>Address (optional)</label>
-        <input type="text" name="address" placeholder="Enter address">
-    </div>
+                <div class="form-group">
+                    <label>Address (optional)</label>
+                    <input type="text" name="address" placeholder="Enter address">
+                </div>
 
-    <div class="form-group">
-        <label>Amount</label>
-        <input type="number" name="amount" placeholder="Enter amount" required>
-    </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" name="amount" placeholder="Enter amount" required>
+                </div>
 
-    <button type="submit" class="btn">
-        Confirm Transfer
-    </button>
+                <button type="submit" class="btn">
+                    Confirm Transfer
+                </button>
 
-</form>
+            </form>
+
             <a href="{{ url_for('dashboard') }}" class="back">
                 ← Back to Dashboard
             </a>
@@ -224,4 +223,4 @@ h2 {
     </div>
 
 </body>
-<html>
+</html>
