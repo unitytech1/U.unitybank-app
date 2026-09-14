@@ -1,72 +1,306 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8"><!-- ✅ FIXED VIEWPORT (no zoom issue) --><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Login - UnityBank</title><style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Sign In - UnityBank</title>
+<style>
 
-/* RESET */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-/* BODY */
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --error:#B3261E;
+    --error-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background:linear-gradient(135deg,#0f172a,#020617);
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
     display:flex;
-    justify-content:center;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* ============ LAYOUT ============ */
+
+.screen{
+    display:flex;
+    width:100%;
+    min-height:100vh;
+}
+
+/* LEFT PANEL — brand / trust */
+.brand-panel{
+    position:relative;
+    flex:0 0 44%;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(14,124,134,0.25), transparent 45%),
+        linear-gradient(165deg, var(--ink) 0%, var(--ink-deep) 100%);
+    color:#EDEFF3;
+    padding:56px 56px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+}
+
+.brand-panel svg.lines{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:0.35;
+}
+
+.wordmark{
+    position:relative;
+    font-family:var(--font-display);
+    font-size:26px;
+    letter-spacing:0.01em;
+}
+
+.wordmark span{
+    color:#5FC3CB;
+}
+
+.brand-copy{
+    position:relative;
+    max-width:360px;
+}
+
+.brand-copy h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:34px;
+    line-height:1.25;
+    margin-bottom:16px;
+}
+
+.brand-copy p{
+    font-size:15px;
+    line-height:1.6;
+    color:#B7BECC;
+    max-width:320px;
+}
+
+.trust-list{
+    position:relative;
+    list-style:none;
+    margin-top:36px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.trust-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    color:#B7BECC;
+}
+
+.trust-list svg{
+    flex:none;
+    margin-top:2px;
+}
+
+.brand-foot{
+    position:relative;
+    font-size:12px;
+    color:#7C8496;
+}
+
+/* RIGHT PANEL — form */
+.form-panel{
+    flex:1;
+    display:flex;
     align-items:center;
-    height:100vh;
-    color:white;
+    justify-content:center;
+    padding:40px 24px;
 }
 
-/* CARD */
 .card{
-    background:#111827;
-    padding:30px;
-    border-radius:20px;
-    width:90%;
-    max-width:350px;
-    text-align:center;
-    box-shadow:0 20px 40px rgba(0,0,0,0.6);
-    border:1px solid #1f2937;
+    width:100%;
+    max-width:380px;
 }
 
-/* LOGO */
-.logo{
-    font-size:22px;
-    font-weight:bold;
+.card-header{
+    margin-bottom:28px;
+}
+
+.card-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    color:var(--text-muted);
     margin-bottom:10px;
 }
 
-.logo span{
-    color:#b8860b;
+.card-header h2{
+    font-size:22px;
+    font-weight:600;
+    color:var(--ink);
 }
 
-/* TITLE */
-.title{
-    font-size:18px;
-    margin-bottom:20px;
+/* FLASH / ERROR */
+.error{
+    background:var(--error-bg);
+    color:var(--error);
+    padding:12px 14px;
+    border-radius:8px;
+    margin-bottom:18px;
+    font-size:13.5px;
+    text-align:left;
+    border:1px solid rgba(179,38,30,0.18);
 }
 
-/* INPUT */
+/* FIELD */
+.field{
+    margin-bottom:18px;
+    text-align:left;
+}
+
+.field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+}
+
+.input-row{
+    position:relative;
+}
+
 .input{
     width:100%;
-    padding:14px;
-    margin-bottom:15px;
-    border-radius:10px;
-    border:1px solid #374151;
-    background:#020617;
-    color:white;
+    padding:13px 14px;
+    border-radius:8px;
+    border:1px solid #CBD1DB;
+    background:var(--card);
+    color:var(--ink);
     outline:none;
-
-    /* 🔥 CRITICAL FIX */
     font-size:16px;
+    font-family:var(--font-body);
+    transition:border-color 0.15s, box-shadow 0.15s;
 }
 
-/* INPUT FOCUS */
+.input::placeholder{
+    color:var(--text-soft);
+}
+
+.input-row .input{
+    padding-right:64px;
+}
+
 .input:focus{
-    border-color:#b8860b;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(14,124,134,0.15);
+}
+
+.input.invalid{
+    border-color:var(--error);
+}
+
+.input.invalid:focus{
+    box-shadow:0 0 0 3px rgba(179,38,30,0.14);
+}
+
+.toggle-pw{
+    position:absolute;
+    right:4px;
+    top:50%;
+    transform:translateY(-50%);
+    background:transparent;
+    border:none;
+    color:var(--accent-dark);
+    font-size:13px;
+    font-weight:600;
+    padding:8px 10px;
+    cursor:pointer;
+    border-radius:6px;
+    font-family:var(--font-body);
+}
+
+.toggle-pw:hover{
+    background:rgba(14,124,134,0.08);
+}
+
+.toggle-pw:focus-visible,
+.input:focus-visible,
+.btn:focus-visible,
+a:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+}
+
+.field-error{
+    color:var(--error);
+    font-size:12.5px;
+    margin-top:6px;
+    display:none;
+}
+
+.field-error.visible{
+    display:block;
+}
+
+/* ROW: remember me / forgot */
+.field-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13.5px;
+    color:var(--text-muted);
+    cursor:pointer;
+}
+
+.checkbox input{
+    width:16px;
+    height:16px;
+    accent-color:var(--accent);
+    cursor:pointer;
+}
+
+.link{
+    font-size:13.5px;
+    color:var(--accent-dark);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.link:hover{
+    text-decoration:underline;
 }
 
 /* BUTTON */
@@ -74,78 +308,332 @@ body{
     width:100%;
     padding:14px;
     border:none;
-    border-radius:10px;
-    background:#b8860b;
+    border-radius:8px;
+    background:var(--accent);
     color:white;
-    font-weight:bold;
+    font-weight:600;
     cursor:pointer;
-    transition:0.3s;
-
-    /* match input */
-    font-size:16px;
+    font-size:15.5px;
+    font-family:var(--font-body);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background 0.15s;
 }
 
 .btn:hover{
-    background:#966d09;
+    background:var(--accent-dark);
 }
 
-/* REGISTER LINK */
+.btn:disabled{
+    opacity:0.75;
+    cursor:not-allowed;
+}
+
+.spinner{
+    width:16px;
+    height:16px;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:white;
+    border-radius:50%;
+    animation:spin 0.7s linear infinite;
+    display:none;
+}
+
+.btn.loading .spinner{
+    display:inline-block;
+}
+
+@keyframes spin{
+    to{ transform:rotate(360deg); }
+}
+
+/* DIVIDER */
+.divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:26px 0;
+    color:var(--text-soft);
+    font-size:12.5px;
+}
+
+.divider::before,
+.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+}
+
+/* REGISTER */
 .register{
-    margin-top:15px;
-    font-size:13px;
-    color:#9ca3af;
+    text-align:center;
+    font-size:14px;
+    color:var(--text-muted);
 }
 
 .register a{
-    color:white;
+    color:var(--ink);
     text-decoration:none;
-    font-weight:bold;
+    font-weight:700;
 }
 
 .register a:hover{
     text-decoration:underline;
 }
 
-/* ERROR */
-.error{
-    background:#7f1d1d;
-    color:#fecaca;
-    padding:10px;
-    border-radius:6px;
-    margin-bottom:10px;
-    font-size:13px;
+/* CARD FOOTER TRUST LINE */
+.card-foot{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:28px;
+    font-size:12px;
+    color:var(--text-soft);
 }
 
-/* FIX MOBILE HEIGHT ISSUES */
-html, body {
-    height:100%;
-    overflow-x:hidden;
+.sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
 }
 
-</style></head><body><div class="card"><div class="logo">Unity<span>Bank</span></div>
-<div class="title">Login to your account</div>
+@media (prefers-reduced-motion: reduce){
+    .spinner{
+        animation:none;
+    }
+}
 
-<!-- FLASH MESSAGE -->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="error">{{ messages[0] }}</div>
-  {% endif %}
-{% endwith %}
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+    .screen{
+        flex-direction:column;
+    }
 
-<form method="POST">
+    .brand-panel{
+        flex:none;
+        padding:28px 24px;
+    }
 
-    <input type="email" name="email" placeholder="Email Address" class="input" required>
+    .brand-copy h1{
+        font-size:24px;
+    }
 
-    <input type="password" name="password" placeholder="Password" class="input" required>
+    .brand-copy p{
+        display:none;
+    }
 
-    <button type="submit" class="btn">Login</button>
+    .trust-list{
+        flex-direction:row;
+        flex-wrap:wrap;
+        gap:18px;
+        margin-top:18px;
+    }
 
-</form>
+    .brand-foot{
+        display:none;
+    }
 
-<div class="register">
-    Don’t have an account?
-    <a href="{{ url_for('register') }}">Create one</a>
+    .form-panel{
+        padding:32px 20px 48px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+    <!-- BRAND / TRUST PANEL -->
+    <div class="brand-panel">
+        <svg class="lines" viewBox="0 0 500 700" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M-20 100 C 120 60, 220 180, 380 120 S 560 40, 620 160" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M-40 260 C 100 220, 200 340, 360 280 S 540 200, 640 320" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.35"/>
+            <path d="M-30 480 C 110 440, 230 560, 380 500 S 560 420, 630 540" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.3"/>
+            <path d="M-20 640 C 110 610, 220 700, 370 650 S 540 590, 620 690" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.25"/>
+            <circle cx="380" cy="120" r="3" fill="#5FC3CB" opacity="0.7"/>
+            <circle cx="360" cy="280" r="3" fill="#5FC3CB" opacity="0.6"/>
+            <circle cx="380" cy="500" r="3" fill="#5FC3CB" opacity="0.5"/>
+        </svg>
+
+        <div class="wordmark">Unity<span>Bank</span></div>
+
+        <div class="brand-copy">
+            <h1>Your accounts, always within reach.</h1>
+            <p>Check balances, move money, and manage cards from one secure place, on any device.</p>
+
+            <ul class="trust-list">
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#5FC3CB" stroke-width="1.6" fill="none"/></svg>
+                    <span>256-bit encrypted connection</span>
+                </li>
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#5FC3CB" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#5FC3CB" stroke-width="1.6" fill="none"/></svg>
+                    <span>FDIC insured up to $250,000</span>
+                </li>
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16M4 6h16M4 18h16" stroke="#5FC3CB" stroke-width="1.6"/></svg>
+                    <span>24/7 fraud monitoring</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="brand-foot">&copy; 2026 UnityBank, N.A. Member FDIC.</div>
+    </div>
+
+    <!-- FORM PANEL -->
+    <div class="form-panel">
+        <div class="card">
+
+            <div class="card-header">
+                <div class="card-eyebrow">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#0E7C86" stroke-width="1.8" fill="none"/></svg>
+                    <span>Secure sign in</span>
+                </div>
+                <h2>Log in to your account</h2>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="error" role="alert">{{ messages[0] }}</div>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" novalidate id="login-form">
+
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="input"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                        aria-describedby="email-error">
+                    <div class="field-error" id="email-error" role="alert">Enter a valid email address.</div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-row">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="input"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required
+                            aria-describedby="password-error">
+                        <button type="button" class="toggle-pw" id="toggle-pw" aria-pressed="false">
+                            <span id="toggle-pw-label">Show</span>
+                            <span class="sr-only">password</span>
+                        </button>
+                    </div>
+                    <div class="field-error" id="password-error" role="alert">Enter your password.</div>
+                </div>
+
+                <div class="field-row">
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember">
+                        <span>Remember this device</span>
+                    </label>
+                    <a href="{{ url_for('forgot_password') }}" class="link">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn" id="submit-btn">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span id="submit-label">Sign in</span>
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <div class="register">
+                New to UnityBank?
+                <a href="{{ url_for('register') }}">Open an account</a>
+            </div>
+
+            <div class="card-foot">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#8A93A3" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+                <span>Your connection to this page is encrypted</span>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
-</div></body>
+<script>
+(function () {
+    var toggleBtn = document.getElementById('toggle-pw');
+    var pwInput = document.getElementById('password');
+    var toggleLabel = document.getElementById('toggle-pw-label');
+
+    toggleBtn.addEventListener('click', function () {
+        var isPassword = pwInput.type === 'password';
+        pwInput.type = isPassword ? 'text' : 'password';
+        toggleLabel.textContent = isPassword ? 'Hide' : 'Show';
+        toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    var form = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var emailError = document.getElementById('email-error');
+    var passwordError = document.getElementById('password-error');
+    var submitBtn = document.getElementById('submit-btn');
+    var submitLabel = document.getElementById('submit-label');
+
+    function isValidEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function setFieldState(input, errorEl, valid) {
+        input.classList.toggle('invalid', !valid);
+        errorEl.classList.toggle('visible', !valid);
+        input.setAttribute('aria-invalid', String(!valid));
+    }
+
+    emailInput.addEventListener('blur', function () {
+        setFieldState(emailInput, emailError, isValidEmail(emailInput.value));
+    });
+
+    pwInput.addEventListener('blur', function () {
+        setFieldState(pwInput, passwordError, pwInput.value.length > 0);
+    });
+
+    form.addEventListener('submit', function (e) {
+        var emailValid = isValidEmail(emailInput.value);
+        var pwValid = pwInput.value.length > 0;
+
+        setFieldState(emailInput, emailError, emailValid);
+        setFieldState(pwInput, passwordError, pwValid);
+
+        if (!emailValid || !pwValid) {
+            e.preventDefault();
+            (emailValid ? pwInput : emailInput).focus();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitLabel.textContent = 'Signing in…';
+    });
+})();
+</script>
+
+</body>
 </html>
