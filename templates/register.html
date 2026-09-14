@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Sign In - UnityBank</title>
+<title>Create Account - UnityBank</title>
 <style>
 
 *{
@@ -174,7 +174,7 @@ body{
     border:1px solid rgba(179,38,30,0.18);
 }
 
-/* FIELD — this wrapper + margin-bottom is what controls spacing between inputs */
+/* FIELD */
 .field{
     margin-bottom:18px;
     text-align:left;
@@ -186,6 +186,77 @@ body{
     font-weight:600;
     color:var(--ink);
     margin-bottom:6px;
+}
+
+.hint{
+    font-size:12px;
+    color:var(--text-soft);
+    margin-top:6px;
+}
+
+/* Two fields side by side (e.g. City / State) */
+.field-group{
+    display:flex;
+    gap:12px;
+}
+
+.field-group .field{
+    flex:1;
+}
+
+select.input{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235B6472' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:36px;
+}
+
+/* Account type radio cards */
+.radio-group{
+    display:flex;
+    gap:10px;
+}
+
+.radio-card{
+    flex:1;
+    position:relative;
+    display:block;
+    border:1px solid #CBD1DB;
+    border-radius:8px;
+    padding:12px;
+    cursor:pointer;
+    transition:border-color 0.15s, background 0.15s;
+}
+
+.radio-card input{
+    position:absolute;
+    opacity:0;
+}
+
+.radio-card .radio-title{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+    display:block;
+}
+
+.radio-card .radio-sub{
+    font-size:12px;
+    color:var(--text-soft);
+    display:block;
+    margin-top:2px;
+}
+
+.radio-card:has(input:checked){
+    border-color:var(--accent);
+    background:rgba(14,124,134,0.06);
+}
+
+.radio-card:has(input:focus-visible){
+    outline:2px solid var(--accent);
+    outline-offset:2px;
 }
 
 .input-row{
@@ -265,28 +336,34 @@ a:focus-visible{
     display:block;
 }
 
-/* "Remember this device" row — forgot-password link removed, so left-aligned now */
-.field-row{
-    display:flex;
-    align-items:center;
-    justify-content:flex-start;
-    margin-bottom:22px;
-}
-
 .checkbox{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:8px;
-    font-size:13.5px;
+    font-size:13px;
     color:var(--text-muted);
     cursor:pointer;
+    margin-bottom:22px;
+    line-height:1.5;
 }
 
 .checkbox input{
     width:16px;
     height:16px;
+    margin-top:2px;
     accent-color:var(--accent);
     cursor:pointer;
+    flex:none;
+}
+
+.checkbox a{
+    color:var(--accent-dark);
+    font-weight:600;
+    text-decoration:none;
+}
+
+.checkbox a:hover{
+    text-decoration:underline;
 }
 
 .btn{
@@ -351,19 +428,19 @@ a:focus-visible{
     background:var(--line);
 }
 
-.register{
+.login-link{
     text-align:center;
     font-size:14px;
     color:var(--text-muted);
 }
 
-.register a{
+.login-link a{
     color:var(--ink);
     text-decoration:none;
     font-weight:700;
 }
 
-.register a:hover{
+.login-link a:hover{
     text-decoration:underline;
 }
 
@@ -429,34 +506,368 @@ a:focus-visible{
         padding:32px 20px 48px;
     }
 }
+
 </style>
 </head>
-
 <body>
 
-<div class="card">
+<div class="screen">
 
-    <div class="logo">Unity<span>Bank</span></div>
-    <div class="title">Create Your Account</div>
+    <!-- BRAND / TRUST PANEL -->
+    <div class="brand-panel">
+        <svg class="lines" viewBox="0 0 500 700" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M-20 100 C 120 60, 220 180, 380 120 S 560 40, 620 160" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M-40 260 C 100 220, 200 340, 360 280 S 540 200, 640 320" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.35"/>
+            <path d="M-30 480 C 110 440, 230 560, 380 500 S 560 420, 630 540" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.3"/>
+            <path d="M-20 640 C 110 610, 220 700, 370 650 S 540 590, 620 690" stroke="#5FC3CB" stroke-width="1" fill="none" opacity="0.25"/>
+            <circle cx="380" cy="120" r="3" fill="#5FC3CB" opacity="0.7"/>
+            <circle cx="360" cy="280" r="3" fill="#5FC3CB" opacity="0.6"/>
+            <circle cx="380" cy="500" r="3" fill="#5FC3CB" opacity="0.5"/>
+        </svg>
 
-    <form method="POST">
+        <div class="wordmark">Unity<span>Bank</span></div>
 
-        <input type="text" name="full_name" placeholder="Full Name" class="input" required>
+        <div class="brand-copy">
+            <h1>Banking that grows with you.</h1>
+            <p>Open an account in minutes and get instant access to your money, on any device.</p>
 
-        <input type="email" name="email" placeholder="Email Address" class="input" required>
+            <ul class="trust-list">
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#5FC3CB" stroke-width="1.6" fill="none"/></svg>
+                    <span>256-bit encrypted connection</span>
+                </li>
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#5FC3CB" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#5FC3CB" stroke-width="1.6" fill="none"/></svg>
+                    <span>FDIC insured up to $250,000</span>
+                </li>
+                <li>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16M4 6h16M4 18h16" stroke="#5FC3CB" stroke-width="1.6"/></svg>
+                    <span>24/7 fraud monitoring</span>
+                </li>
+            </ul>
+        </div>
 
-        <input type="password" name="password" placeholder="Password" class="input" required>
+        <div class="brand-foot">&copy; 2026 UnityBank, N.A. Member FDIC.</div>
+    </div>
 
-        <button type="submit" class="btn">Open Account</button>
+    <!-- FORM PANEL -->
+    <div class="form-panel">
+        <div class="card">
 
-    </form>
+            <div class="card-header">
+                <div class="card-eyebrow">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#0E7C86" stroke-width="1.8" fill="none"/></svg>
+                    <span>Secure sign up</span>
+                </div>
+                <h2>Create your account</h2>
+            </div>
 
-    <div class="login">
-        Already have an account?
-        <a href="{{ url_for('login') }}">Login</a>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="error" role="alert">{{ messages[0] }}</div>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" novalidate id="register-form">
+
+                <div class="field">
+                    <label for="full_name">Full name</label>
+                    <input
+                        type="text"
+                        name="full_name"
+                        id="full_name"
+                        class="input"
+                        placeholder="Jane Smith"
+                        autocomplete="name"
+                        required
+                        aria-describedby="name-error">
+                    <div class="field-error" id="name-error" role="alert">Enter your full name.</div>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="input"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                        aria-describedby="email-error">
+                    <div class="field-error" id="email-error" role="alert">Enter a valid email address.</div>
+                </div>
+
+                <div class="field-group">
+                    <div class="field">
+                        <label for="phone">Phone number</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            id="phone"
+                            class="input"
+                            placeholder="(555) 123-4567"
+                            autocomplete="tel"
+                            required
+                            aria-describedby="phone-error">
+                        <div class="field-error" id="phone-error" role="alert">Enter a valid phone number.</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="dob">Date of birth</label>
+                        <input
+                            type="date"
+                            name="dob"
+                            id="dob"
+                            class="input"
+                            autocomplete="bday"
+                            required
+                            aria-describedby="dob-error">
+                        <div class="field-error" id="dob-error" role="alert">You must be 18 or older to open an account.</div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="address">Street address</label>
+                    <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        class="input"
+                        placeholder="123 Main St"
+                        autocomplete="street-address"
+                        required
+                        aria-describedby="address-error">
+                    <div class="field-error" id="address-error" role="alert">Enter your street address.</div>
+                </div>
+
+                <div class="field-group">
+                    <div class="field">
+                        <label for="city">City</label>
+                        <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            class="input"
+                            placeholder="Springfield"
+                            autocomplete="address-level2"
+                            required>
+                    </div>
+
+                    <div class="field" style="max-width:110px;">
+                        <label for="state">State</label>
+                        <input
+                            type="text"
+                            name="state"
+                            id="state"
+                            class="input"
+                            placeholder="IL"
+                            maxlength="2"
+                            autocomplete="address-level1"
+                            required>
+                    </div>
+
+                    <div class="field" style="max-width:120px;">
+                        <label for="zip">ZIP</label>
+                        <input
+                            type="text"
+                            name="zip"
+                            id="zip"
+                            class="input"
+                            placeholder="62704"
+                            autocomplete="postal-code"
+                            inputmode="numeric"
+                            required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Account type</label>
+                    <div class="radio-group">
+                        <label class="radio-card">
+                            <input type="radio" name="account_type" value="checking" checked>
+                            <span class="radio-title">Checking</span>
+                            <span class="radio-sub">Everyday spending</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="account_type" value="savings">
+                            <span class="radio-title">Savings</span>
+                            <span class="radio-sub">Earn interest</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="account_type" value="both">
+                            <span class="radio-title">Both</span>
+                            <span class="radio-sub">Checking + savings</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-row">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="input"
+                            placeholder="••••••••"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                            aria-describedby="password-error password-hint">
+                        <button type="button" class="toggle-pw" id="toggle-pw" aria-pressed="false">
+                            <span id="toggle-pw-label">Show</span>
+                            <span class="sr-only">password</span>
+                        </button>
+                    </div>
+                    <div class="hint" id="password-hint">At least 8 characters.</div>
+                    <div class="field-error" id="password-error" role="alert">Password must be at least 8 characters.</div>
+                </div>
+
+                <div class="field">
+                    <label for="referral_source">How did you hear about us? <span style="font-weight:400; color:var(--text-soft);">(optional)</span></label>
+                    <select name="referral_source" id="referral_source" class="input">
+                        <option value="" selected>Select an option</option>
+                        <option value="search">Search engine</option>
+                        <option value="social">Social media</option>
+                        <option value="friend">Friend or family</option>
+                        <option value="ad">Advertisement</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                    <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span>
+                </label>
+
+                <button type="submit" class="btn" id="submit-btn">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span id="submit-label">Open account</span>
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Log in</a>
+            </div>
+
+            <div class="card-foot">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#8A93A3" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+                <span>Your connection to this page is encrypted</span>
+            </div>
+
+        </div>
     </div>
 
 </div>
+
+<script>
+(function () {
+    var toggleBtn = document.getElementById('toggle-pw');
+    var pwInput = document.getElementById('password');
+    var toggleLabel = document.getElementById('toggle-pw-label');
+
+    toggleBtn.addEventListener('click', function () {
+        var isPassword = pwInput.type === 'password';
+        pwInput.type = isPassword ? 'text' : 'password';
+        toggleLabel.textContent = isPassword ? 'Hide' : 'Show';
+        toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    var form = document.getElementById('register-form');
+    var nameInput = document.getElementById('full_name');
+    var nameError = document.getElementById('name-error');
+    var emailInput = document.getElementById('email');
+    var emailError = document.getElementById('email-error');
+    var phoneInput = document.getElementById('phone');
+    var phoneError = document.getElementById('phone-error');
+    var dobInput = document.getElementById('dob');
+    var dobError = document.getElementById('dob-error');
+    var addressInput = document.getElementById('address');
+    var addressError = document.getElementById('address-error');
+    var passwordError = document.getElementById('password-error');
+    var submitBtn = document.getElementById('submit-btn');
+    var submitLabel = document.getElementById('submit-label');
+
+    function isValidEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function isValidPhone(value) {
+        return value.replace(/\D/g, '').length >= 10;
+    }
+
+    function isAdult(value) {
+        if (!value) return false;
+        var dob = new Date(value);
+        if (isNaN(dob.getTime())) return false;
+        var eighteenYearsAgo = new Date();
+        eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+        return dob <= eighteenYearsAgo;
+    }
+
+    function setFieldState(input, errorEl, valid) {
+        input.classList.toggle('invalid', !valid);
+        errorEl.classList.toggle('visible', !valid);
+        input.setAttribute('aria-invalid', String(!valid));
+    }
+
+    nameInput.addEventListener('blur', function () {
+        setFieldState(nameInput, nameError, nameInput.value.trim().length > 0);
+    });
+
+    emailInput.addEventListener('blur', function () {
+        setFieldState(emailInput, emailError, isValidEmail(emailInput.value));
+    });
+
+    phoneInput.addEventListener('blur', function () {
+        setFieldState(phoneInput, phoneError, isValidPhone(phoneInput.value));
+    });
+
+    dobInput.addEventListener('blur', function () {
+        setFieldState(dobInput, dobError, isAdult(dobInput.value));
+    });
+
+    addressInput.addEventListener('blur', function () {
+        setFieldState(addressInput, addressError, addressInput.value.trim().length > 0);
+    });
+
+    pwInput.addEventListener('blur', function () {
+        setFieldState(pwInput, passwordError, pwInput.value.length >= 8);
+    });
+
+    form.addEventListener('submit', function (e) {
+        var checks = [
+            [nameInput, nameError, nameInput.value.trim().length > 0],
+            [emailInput, emailError, isValidEmail(emailInput.value)],
+            [phoneInput, phoneError, isValidPhone(phoneInput.value)],
+            [dobInput, dobError, isAdult(dobInput.value)],
+            [addressInput, addressError, addressInput.value.trim().length > 0],
+            [pwInput, passwordError, pwInput.value.length >= 8]
+        ];
+
+        var firstInvalid = null;
+        checks.forEach(function (c) {
+            setFieldState(c[0], c[1], c[2]);
+            if (!c[2] && !firstInvalid) firstInvalid = c[0];
+        });
+
+        if (firstInvalid) {
+            e.preventDefault();
+            firstInvalid.focus();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitLabel.textContent = 'Creating account…';
+    });
+})();
+</script>
 
 </body>
 </html>
