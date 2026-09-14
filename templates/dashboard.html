@@ -2,66 +2,173 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unity Bank Dashboard</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Dashboard - UnityBank</title>
 <style>
 
-/* BODY */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --success:#1B8A5A;
+    --success-bg:#E7F5EE;
+    --danger:#B3261E;
+    --danger-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
     margin:0;
-    font-family:'Segoe UI';
-    background:linear-gradient(135deg,#0f172a,#020617);
-    color:white;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
 }
 
-/* LAYOUT */
+a{ color:inherit; }
+
+/* ============ LAYOUT ============ */
 .container{
     display:grid;
-    grid-template-columns:220px 1fr;
+    grid-template-columns:240px 1fr;
+    min-height:100vh;
 }
 
-@media (max-width:768px){
+@media (max-width:900px){
     .container{
         display:block;
     }
 }
 
-/* SIDEBAR */
+/* ============ SIDEBAR ============ */
 .sidebar{
-    background:#020617;
-    padding:20px;
+    background:var(--card);
+    border-right:1px solid var(--line);
+    padding:28px 20px;
     height:100vh;
+    position:sticky;
+    top:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar .wordmark{
+    font-family:var(--font-display);
+    font-size:21px;
+    color:var(--ink);
+    padding:0 8px;
+    margin-bottom:32px;
+}
+
+.sidebar .wordmark span{
+    color:var(--accent);
+}
+
+.nav-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
 .sidebar a{
-    display:block;
-    padding:10px;
-    margin-bottom:10px;
-    border-radius:8px;
-    color:#94a3b8;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 12px;
+    border-radius:10px;
+    color:var(--text-muted);
     text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    transition:background 0.15s, color 0.15s;
+}
+
+.sidebar a svg{
+    flex:none;
 }
 
 .sidebar a:hover{
-    background:#1e293b;
-    color:white;
+    background:var(--paper);
+    color:var(--ink);
 }
 
-/* MAIN */
-.main {
-    padding: 15px;
-    padding-bottom: 90px;
+.sidebar a.active{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
 }
 
-/* PAGE */
+.sidebar-foot{
+    margin-top:auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    border-top:1px solid var(--line);
+}
+
+.sidebar-foot img{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    object-fit:cover;
+    background:var(--paper);
+}
+
+.sidebar-foot div{
+    font-size:12.5px;
+}
+
+.sidebar-foot .name{
+    font-weight:600;
+    color:var(--ink);
+}
+
+.sidebar-foot .role{
+    color:var(--text-soft);
+}
+
+/* ============ MAIN ============ */
+.main{
+    padding:32px 36px 100px;
+    max-width:900px;
+}
+
+@media (max-width:900px){
+    .sidebar{ display:none; }
+    .main{ padding:20px 16px 96px; max-width:none; }
+}
+
 .page{
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:24px;
 }
 
-/* PROFILE */
+/* HEADER */
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
 .profile{
     display:flex;
     align-items:center;
@@ -69,77 +176,144 @@ body{
 }
 
 .profile img{
-    width:45px;
-    height:45px;
+    width:44px;
+    height:44px;
     border-radius:50%;
+    object-fit:cover;
+    background:var(--line);
 }
 
-/* BALANCE BOX (UPGRADED) */
+.profile h2{
+    font-size:17px;
+    font-weight:600;
+}
+
+.profile small{
+    color:var(--text-soft);
+    font-size:12.5px;
+}
+
+.bell{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+/* BALANCE CARD */
 .balance-box{
-    background:#111827;
+    position:relative;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(95,195,203,0.20), transparent 45%),
+        linear-gradient(165deg, var(--ink) 0%, var(--ink-deep) 100%);
     border-radius:20px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    padding:26px 26px 22px;
+    color:#EDEFF3;
+    overflow:hidden;
+}
+
+.balance-box .label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:13px;
+    color:#A9B2C3;
+}
+
+.eye-btn{
+    background:rgba(255,255,255,0.08);
+    border:none;
+    color:#EDEFF3;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.eye-btn:hover{
+    background:rgba(255,255,255,0.16);
 }
 
 .balance-box h1{
-    font-size:28px;
-    margin:10px 0;
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:34px;
+    margin:8px 0 4px;
+    letter-spacing:0.01em;
 }
 
-/* ACTION ICONS */
+.balance-box .sub{
+    font-size:12.5px;
+    color:#8993A6;
+}
+
 .actions-row{
     display:flex;
     justify-content:space-between;
-    margin-top:15px;
+    gap:10px;
+    margin-top:22px;
 }
 
 .circle{
-    background:#1e293b;
-    width:65px;
-    height:65px;
-    border-radius:50%;
+    flex:1;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:14px;
+    padding:12px 6px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    gap:6px;
     align-items:center;
-    font-size:13px;
-    color:white;
+    font-size:12px;
+    color:#EDEFF3;
     text-decoration:none;
-    transition:0.2s;
+    cursor:pointer;
+    transition:background 0.15s, transform 0.15s;
+}
+
+.circle svg{
+    flex:none;
 }
 
 .circle:hover{
-    background:#334155;
-    transform:scale(1.05);
+    background:rgba(255,255,255,0.12);
+    transform:translateY(-2px);
 }
 
-/* HISTORY */
-.history{
-    background:#0f172a;
-    padding:15px;
-    border-radius:16px;
-}
-
-.tx{
+/* SECTION HEADER */
+.section-head{
     display:flex;
+    align-items:center;
     justify-content:space-between;
-    padding:10px 0;
-    border-bottom:1px solid #1f2937;
 }
 
-.credit{color:#22c55e;}
-.debit{color:#ef4444;}
+.section-head h3{
+    font-size:15px;
+    font-weight:600;
+}
 
-/* CARD */
-/* =========================
-   CARD SLIDER
-========================= */
+.section-head .view-all{
+    font-size:12.5px;
+    color:var(--accent-dark);
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+/* CARD SLIDER */
 .card-slider{
     display:flex;
-    gap:15px;
+    gap:14px;
     overflow-x:auto;
-    padding:10px 0;
+    padding:4px 2px 10px;
     scroll-snap-type:x mandatory;
 }
 
@@ -147,179 +321,337 @@ body{
     display:none;
 }
 
-/* =========================
-   CARD UI (UPDATED DESIGN)
-========================= */
 .card-ui{
-    min-width:300px;
+    min-width:290px;
     flex-shrink:0;
-    border-radius:20px;
+    border-radius:18px;
     padding:20px;
-    color:white;
+    color:#EDEFF3;
     scroll-snap-align:start;
-
-    /* 🔴 PREMIUM RED ATM STYLE */
-    background: linear-gradient(135deg, #7f1d1d, #dc2626, #111827);
-
-    box-shadow: 
-        0 20px 40px rgba(0,0,0,0.6),
-        inset 0 0 30px rgba(255,255,255,0.05);
-
     position:relative;
     overflow:hidden;
-    transition:0.3s;
+    background:linear-gradient(155deg, #16264A 0%, var(--ink-deep) 100%);
+    box-shadow:0 14px 30px rgba(6,18,36,0.35);
 }
 
-/* ✨ CURVED LIGHT EFFECT */
 .card-ui::before{
     content:'';
     position:absolute;
-    width:200%;
-    height:200%;
-    top:-60%;
-    left:-50%;
-    background:rgba(255,255,255,0.06);
-    border-radius:50%;
+    width:160%;
+    height:160%;
+    top:-70%;
+    right:-60%;
+    background:radial-gradient(circle, rgba(95,195,203,0.18), transparent 60%);
 }
 
-/* 🔥 HOVER EFFECT */
-.card-ui:hover{
-    transform: translateY(-5px);
-    box-shadow: 
-        0 25px 50px rgba(0,0,0,0.8),
-        0 0 20px rgba(220,38,38,0.4);
+.card-ui.card-alt{
+    background:linear-gradient(155deg, #1F2937 0%, #0B1220 100%);
 }
 
-/* =========================
-   CARD STRUCTURE
-========================= */
 .card-top{
+    position:relative;
     display:flex;
     justify-content:space-between;
-    font-weight:bold;
-    font-size:14px;
+    align-items:center;
+    font-size:13px;
+}
+
+.card-top .brand{
+    font-family:var(--font-display);
+    font-size:15px;
+}
+
+.card-top .network{
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:#B7BECC;
+    font-weight:600;
+}
+
+.card-chip{
+    position:relative;
+    width:34px;
+    height:24px;
+    border-radius:5px;
+    margin-top:22px;
+    background:linear-gradient(135deg,#D9C989,#B8A45E);
+    opacity:0.9;
 }
 
 .card-number{
-    margin:20px 0;
-    font-size:18px;
-    letter-spacing:2px;
+    position:relative;
+    margin:16px 0 18px;
+    font-size:17px;
+    letter-spacing:2.5px;
     font-weight:500;
 }
 
 .card-bottom{
+    position:relative;
     display:flex;
     justify-content:space-between;
-    font-size:12px;
-    opacity:0.9;
-}
-
-/* BUTTON */
-button{
-    padding:6px 10px;
-    border:none;
-    border-radius:6px;
-    background:#1f2937;
-    color:white;
-}
-
-/* MOBILE */
-@media (max-width:768px){
-    .sidebar{
-        display:none;
-    }
-}
-
-/* BOTTOM NAV */
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:#020617;
-    display:flex;
-    justify-content:space-around;
-    padding:10px 0;
-    border-top:1px solid #1f2937;
-    z-index:1000;
-}
-
-.bottom-nav a{
-    color:#94a3b8;
-    text-decoration:none;
     font-size:11px;
-    text-align:center;
+    color:#B7BECC;
 }
 
-.bottom-nav a:hover{
-    color:#22c55e;
+.card-bottom p{
+    color:#EDEFF3;
+    font-size:12.5px;
+    margin-top:2px;
 }
-/* INVESTMENT BOX */
-.investment-box{
-    background:#0f172a;
-    padding:15px;
+
+/* TRANSACTIONS / HISTORY */
+.history{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:6px 16px;
     border-radius:16px;
-    margin-top:10px;
 }
 
-/* HEADER */
-.investment-header{
+.tx{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-bottom:10px;
+    justify-content:space-between;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
 }
 
-.investment-header span{
+.tx:last-child{
+    border-bottom:none;
+}
+
+.tx-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.tx-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+}
+
+.tx-icon.credit-icon{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.tx-icon.debit-icon{
+    background:var(--danger-bg);
+    color:var(--danger);
+}
+
+.tx-name{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+}
+
+.tx-date{
     font-size:12px;
-    color:#94a3b8;
+    color:var(--text-soft);
 }
 
-/* ITEM */
+.credit{ color:var(--success); font-weight:600; }
+.debit{ color:var(--danger); font-weight:600; }
+
+.empty-state{
+    text-align:center;
+    padding:22px 10px;
+    color:var(--text-soft);
+    font-size:13px;
+}
+
+/* INVESTMENTS */
+.investment-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:6px 16px;
+    border-radius:16px;
+}
+
 .investment-item{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid #1f2937;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
 }
 
 .investment-item:last-child{
     border-bottom:none;
 }
 
-/* LEFT SIDE */
 .left{
     display:flex;
-    gap:10px;
+    gap:12px;
     align-items:center;
 }
 
-.icon{
-    width:35px;
-    height:35px;
-    background:#1e293b;
+.inv-icon{
+    width:34px;
+    height:34px;
     border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    object-fit:cover;
+    background:var(--paper);
+    padding:6px;
+    border:1px solid var(--line);
 }
-/* RIGHT SIDE */
+
+.left p{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+}
+
+.left small{
+    color:var(--text-soft);
+    font-size:12px;
+}
+
 .right{
     text-align:right;
 }
 
+.right p{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+}
+
 .profit{
-    color:#22c55e;
+    color:var(--success);
     font-size:12px;
 }
-.inv-icon{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    object-fit:cover;
-    background:#1e293b;
-    padding:5px;
+
+/* BUTTON (generic) */
+button{
+    font-family:var(--font-body);
+    padding:9px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--card);
+    color:var(--ink);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--paper);
+}
+
+/* MODALS */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(6,18,36,0.55);
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+    padding:20px;
+}
+
+.modal-box{
+    background:var(--card);
+    padding:28px;
+    border-radius:16px;
+    text-align:left;
+    width:100%;
+    max-width:320px;
+    box-shadow:0 20px 50px rgba(6,18,36,0.3);
+}
+
+.modal-box h3{
+    font-size:17px;
+    margin-bottom:16px;
+}
+
+.modal-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13.5px;
+}
+
+.modal-row:last-of-type{
+    border-bottom:none;
+    margin-bottom:18px;
+}
+
+.modal-row span:first-child{
+    color:var(--text-soft);
+}
+
+.modal-row span:last-child{
+    font-weight:600;
+    color:var(--ink);
+}
+
+.modal-box button{
+    width:100%;
+    background:var(--accent);
+    color:white;
+    border:none;
+    padding:11px;
+}
+
+.modal-box button:hover{
+    background:var(--accent-dark);
+}
+
+.loader-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:var(--ink-deep);
+    justify-content:center;
+    align-items:center;
+    z-index:1100;
+    color:white;
+    font-size:14px;
+}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{
+    display:none;
+}
+
+@media (max-width:900px){
+    .bottom-nav{
+        display:flex;
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        background:var(--card);
+        justify-content:space-around;
+        padding:10px 0 calc(10px + env(safe-area-inset-bottom));
+        border-top:1px solid var(--line);
+        z-index:900;
+    }
+
+    .bottom-nav a{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:3px;
+        color:var(--text-soft);
+        text-decoration:none;
+        font-size:10.5px;
+        font-weight:600;
+    }
+
+    .bottom-nav a.active{
+        color:var(--accent-dark);
+    }
 }
 
 </style>
@@ -327,261 +659,363 @@ button{
 
 <body>
 
-<!-- RECEIVE POPUP -->
-<div id="receiveBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center;">
-    <div style="background:#111827; padding:30px; border-radius:12px; text-align:center; width:300px;">
-        <h3>Receive Money</h3>
-        <p><b>Bank:</b> UnityBank</p>
-        <p><b>Account Name:</b> {{ user.full_name }}</p>
-        <p><b>Account Number:</b> 2039485721</p>
+<!-- RECEIVE MODAL -->
+<div id="receiveBox" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="receive-title">
+    <div class="modal-box">
+        <h3 id="receive-title">Receive money</h3>
+        <div class="modal-row"><span>Bank</span><span>UnityBank</span></div>
+        <div class="modal-row"><span>Account name</span><span>{{ user.full_name }}</span></div>
+        <div class="modal-row"><span>Account number</span><span>2039485721</span></div>
         <button onclick="closeReceive()">Close</button>
     </div>
 </div>
 
 <!-- LOADER -->
-<div id="loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:black; justify-content:center; align-items:center;">
-    <div style="color:white;">Loading...</div>
+<div id="loader" class="loader-overlay" role="status" aria-live="polite">
+    <div>Loading…</div>
 </div>
 
 <div class="container">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-    <h2>UnityBank</h2>
-    <a href="{{ url_for('dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('transfer') }}">Transfer</a>
-    <a href="{{ url_for('transactions') }}">History</a>
-    <a href="{{ url_for('settings') }}">Settings</a>
+    <div class="wordmark">Unity<span>Bank</span></div>
+
+    <nav class="nav-group">
+        <a href="{{ url_for('dashboard') }}" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="1.7"/><path d="M6 10v9a1 1 0 001 1h10a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.7"/></svg>
+            Dashboard
+        </a>
+        <a href="{{ url_for('transfer') }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h13M17 7l-3.5-3.5M17 7l-3.5 3.5" stroke="currentColor" stroke-width="1.7"/><path d="M20 17H7M7 17l3.5-3.5M7 17l3.5 3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+            Transfer
+        </a>
+        <a href="{{ url_for('transactions') }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7"/></svg>
+            History
+        </a>
+        <a href="{{ url_for('settings') }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1-1.7-1.7-1.7-1.7 1a1.7 1.7 0 00-3 0l-1-1.7-1.7 0-1 1.7a1.7 1.7 0 00-3 0l-1.7-1-1.7 1.7 1 1.7a1.7 1.7 0 000 3l-1 1.7 1.7 1.7 1.7-1a1.7 1.7 0 003 0l1 1.7 1.7 0 1-1.7a1.7 1.7 0 003 0l1.7 1 1.7-1.7-1-1.7z" stroke="currentColor" stroke-width="1.3"/></svg>
+            Settings
+        </a>
+    </nav>
+
+    <div class="sidebar-foot">
+        <img src="{{ url_for('static', filename='uploads/' + (user.profile_pic_path or 'default.jpg')) }}" alt="">
+        <div>
+            <div class="name">{{ user.full_name }}</div>
+            <div class="role">Personal account</div>
+        </div>
+    </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-<!-- PAGE 1 -->
 <div class="page page-1">
 
-<div class="profile">
-    <img src="{{ url_for('static', filename='uploads/' + (user.profile_pic_path or 'default.jpg')) }}">
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="profile">
+            <img src="{{ url_for('static', filename='uploads/' + (user.profile_pic_path or 'default.jpg')) }}" alt="">
+            <div>
+                <h2>Welcome back, {{ user.full_name.split(' ')[0] if user.full_name else 'there' }}</h2>
+                <small>Here's your financial overview</small>
+            </div>
+        </div>
+        <div class="bell" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0c0 4 1.5 5.5 1.5 5.5h-15S6 14 6 10z" stroke="#5B6472" stroke-width="1.6"/><path d="M10 19a2 2 0 004 0" stroke="#5B6472" stroke-width="1.6"/></svg>
+        </div>
+    </div>
+
+    <!-- BALANCE -->
+    <div class="balance-box">
+        <div class="label">
+            <span>Total balance</span>
+            <button class="eye-btn" id="balance-toggle" aria-pressed="true" aria-label="Hide balance">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" id="eye-icon"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z" stroke="#EDEFF3" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="#EDEFF3" stroke-width="1.6"/></svg>
+            </button>
+        </div>
+        <h1 id="balance-amount" data-value="{{ '{:,.2f}'.format(user.balance or 0) }}">${{ "{:,.2f}".format(user.balance or 0) }}</h1>
+        <div class="sub">Available across all accounts</div>
+
+        <div class="actions-row">
+            <a href="{{ url_for('transfer') }}" class="circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8"/></svg>
+                Send
+            </a>
+            <a href="#" onclick="showReceive(); return false;" class="circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="1.8"/></svg>
+                Receive
+            </a>
+            <div class="circle" role="button" tabindex="0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"/></svg>
+                Top Up
+            </div>
+            <div class="circle" role="button" tabindex="0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
+                Freeze
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDS -->
     <div>
-        <h2>Welcome back, {{ user.full_name }}</h2>
-        <small>Your financial overview</small>
+        <div class="section-head" style="margin-bottom:10px;">
+            <h3>Your cards</h3>
+            <span class="view-all">Manage</span>
+        </div>
+
+        <div class="card-slider">
+            <div class="card-ui">
+                <div class="card-top">
+                    <span class="brand">UnityBank</span>
+                    <span class="network">VISA</span>
+                </div>
+                <div class="card-chip"></div>
+                <div class="card-number">•••• •••• •••• 2048</div>
+                <div class="card-bottom">
+                    <div>
+                        <span>VALID THRU</span>
+                        <p>05/28</p>
+                    </div>
+                    <div>
+                        <span>CARD HOLDER</span>
+                        <p>{{ user.full_name }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-ui card-alt">
+                <div class="card-top">
+                    <span class="brand">UnityBank</span>
+                    <span class="network">MASTERCARD</span>
+                </div>
+                <div class="card-chip"></div>
+                <div class="card-number">•••• •••• •••• 7821</div>
+                <div class="card-bottom">
+                    <div>
+                        <span>VALID THRU</span>
+                        <p>08/29</p>
+                    </div>
+                    <div>
+                        <span>CARD HOLDER</span>
+                        <p>{{ user.full_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- RECENT ACTIVITY -->
+    <div>
+        <div class="section-head" style="margin-bottom:10px;">
+            <h3>Recent activity</h3>
+            <a href="{{ url_for('transactions') }}" class="view-all">View all</a>
+        </div>
+
+        <div class="history">
+            {% for t in transactions[:5] %}
+            <div class="tx">
+                <div class="tx-left">
+                    <div class="tx-icon {{ 'debit-icon' if t.transaction_type=='debit' else 'credit-icon' }}">
+                        {% if t.transaction_type=='debit' %}
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="1.8"/></svg>
+                        {% else %}
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8"/></svg>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="tx-name">{{ t.receiver_name }}</div>
+                        <div class="tx-date">{{ t.created_at.strftime('%b %d, %Y') if t.created_at else '' }}</div>
+                    </div>
+                </div>
+                <span class="{{ 'debit' if t.transaction_type=='debit' else 'credit' }}">
+                    {{ '-' if t.transaction_type=='debit' else '+' }}${{ "{:,.2f}".format(t.amount or 0) }}
+                </span>
+            </div>
+            {% else %}
+            <div class="empty-state">No transactions yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- INVESTMENTS -->
+    <div class="investment-box" style="margin-top:0;">
+        <div class="investment-header section-head" style="margin-bottom:8px;">
+            <h3>Investment portfolio</h3>
+            <span class="view-all" onclick="showInvestment()">View all</span>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" class="inv-icon" alt="">
+                <div>
+                    <p>Apple</p>
+                    <small>Stocks</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$129.89</p>
+                <small class="profit">+3.5%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968661.png" class="inv-icon" alt="">
+                <div>
+                    <p>Tesla</p>
+                    <small>Growth stock</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$210.45</p>
+                <small class="profit">+2.1%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" class="inv-icon" alt="">
+                <div>
+                    <p>Microsoft</p>
+                    <small>Value stock</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$320.11</p>
+                <small class="profit">+1.8%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/825/825508.png" class="inv-icon" alt="">
+                <div>
+                    <p>Bitcoin</p>
+                    <small>Crypto</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$210.93</p>
+                <small class="profit">+1.2%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/7016/7016523.png" class="inv-icon" alt="">
+                <div>
+                    <p>Ethereum</p>
+                    <small>Crypto</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$98.21</p>
+                <small class="profit">+4.8%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" class="inv-icon" alt="">
+                <div>
+                    <p>S&amp;P 500</p>
+                    <small>Index fund</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$450.32</p>
+                <small class="profit">+2.7%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/69/69524.png" class="inv-icon" alt="">
+                <div>
+                    <p>Real Estate</p>
+                    <small>Property</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$1,200.00</p>
+                <small class="profit">+5.2%</small>
+            </div>
+        </div>
+
+        <div class="investment-item">
+            <div class="left">
+                <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" class="inv-icon" alt="">
+                <div>
+                    <p>Startup Fund</p>
+                    <small>Private equity</small>
+                </div>
+            </div>
+            <div class="right">
+                <p>$890.00</p>
+                <small class="profit">+6.4%</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- INVESTMENT DETAIL SECTION -->
+    <div id="investmentSection" style="display:none;">
+        <button onclick="goHome()" style="margin-bottom:14px;">← Back</button>
+
+        <div class="balance-box" style="margin-bottom:16px;">
+            <div class="label"><span>Investment account</span></div>
+            <h1>$12,450.00</h1>
+        </div>
+
+        <div class="history">
+            <h3 style="padding:14px 0 6px; font-size:14px;">Investment transactions</h3>
+            {% for t in transactions[:3] %}
+            <div class="tx">
+                <div class="tx-left">
+                    <div class="tx-icon {{ 'debit-icon' if t.transaction_type=='debit' else 'credit-icon' }}">
+                        {% if t.transaction_type=='debit' %}
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="1.8"/></svg>
+                        {% else %}
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8"/></svg>
+                        {% endif %}
+                    </div>
+                    <div class="tx-name">{{ t.receiver_name }}</div>
+                </div>
+                <span class="{{ 'debit' if t.transaction_type=='debit' else 'credit' }}">
+                    {{ '-' if t.transaction_type=='debit' else '+' }}${{ "{:,.2f}".format(t.amount or 0) }}
+                </span>
+            </div>
+            {% else %}
+            <div class="empty-state">No investment transactions yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+</div>
 </div>
 
-<!-- BALANCE -->
-<div class="balance-box">
-    <p>Balance</p>
-    <h1>${{ "{:,.2f}".format(user.balance or 0) }} 👁️</h1>
-
-    <div class="actions-row">
-        <a href="{{ url_for('transfer') }}" class="circle">💸<br><small>Send</small></a>
-        <a href="#" onclick="showReceive()" class="circle">📥<br><small>Receive</small></a>
-        <div class="circle">➕<br><small>Top Up</small></div>
-        <div class="circle">🔒<br><small>Freeze</small></div>
-    </div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <a href="{{ url_for('dashboard') }}" class="active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="1.7"/><path d="M6 10v9a1 1 0 001 1h10a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.7"/></svg>
+        Home
+    </a>
+    <a href="{{ url_for('transfer') }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h13M17 7l-3.5-3.5M17 7l-3.5 3.5" stroke="currentColor" stroke-width="1.7"/><path d="M20 17H7M7 17l3.5-3.5M7 17l3.5 3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+        Transfer
+    </a>
+    <a href="{{ url_for('transactions') }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7"/></svg>
+        History
+    </a>
+    <a href="{{ url_for('settings') }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1-1.7-1.7-1.7-1.7 1a1.7 1.7 0 00-3 0l-1-1.7-1.7 0-1 1.7a1.7 1.7 0 00-3 0l-1.7-1-1.7 1.7 1 1.7a1.7 1.7 0 000 3l-1 1.7 1.7 1.7 1.7-1a1.7 1.7 0 003 0l1 1.7 1.7 0 1-1.7a1.7 1.7 0 003 0l1.7 1 1.7-1.7-1-1.7z" stroke="currentColor" stroke-width="1.3"/></svg>
+        Settings
+    </a>
 </div>
-<!-- CARD SLIDER -->
-<div class="card-slider">
-
-    <div class="card-ui">
-        <div class="card-top">
-            <h4>UnityBank</h4>
-            <span>VISA</span>
-        </div>
-
-        <div class="card-number">
-            **** **** **** 2048
-        </div>
-
-        <div class="card-bottom">
-            <div>
-                <small>VALID THRU</small>
-                <p>05/28</p>
-            </div>
-            <div>
-                <small>CARD HOLDER</small>
-                <p>{{ user.full_name }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="card-ui">
-        <div class="card-top">
-            <h4>UnityBank</h4>
-            <span>MASTER</span>
-        </div>
-
-        <div class="card-number">
-            **** **** **** 7821
-        </div>
-
-        <div class="card-bottom">
-            <div>
-                <small>VALID THRU</small>
-                <p>08/29</p>
-            </div>
-            <div>
-                <small>CARD HOLDER</small>
-                <p>{{ user.full_name }}</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="investment-box">
-
-    <div class="investment-header">
-        <h3>Investments portfolio</h3>
-        <span>View all</span>
-    </div>
-
-    <!-- APPLE -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" class="inv-icon">
-            <div>
-                <p>Apple</p>
-                <small>Stocks</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$129.89</p>
-            <small class="profit">+3.5%</small>
-        </div>
-    </div>
-
-    <!-- TESLA -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968661.png" class="inv-icon">
-            <div>
-                <p>Tesla</p>
-                <small>Growth Stock</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$210.45</p>
-            <small class="profit">+2.1%</small>
-        </div>
-    </div>
-
-    <!-- MICROSOFT -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" class="inv-icon">
-            <div>
-                <p>Microsoft</p>
-                <small>Value Stock</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$320.11</p>
-            <small class="profit">+1.8%</small>
-        </div>
-    </div>
-
-    <!-- BITCOIN -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/825/825508.png" class="inv-icon">
-            <div>
-                <p>Bitcoin</p>
-                <small>Crypto</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$210.93</p>
-            <small class="profit">+1.2%</small>
-        </div>
-    </div>
-
-    <!-- ETHEREUM -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/7016/7016523.png" class="inv-icon">
-            <div>
-                <p>Ethereum</p>
-                <small>Crypto</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$98.21</p>
-            <small class="profit">+4.8%</small>
-        </div>
-    </div>
-
-    <!-- S&P 500 -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" class="inv-icon">
-            <div>
-                <p>S&P 500</p>
-                <small>Index Fund</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$450.32</p>
-            <small class="profit">+2.7%</small>
-        </div>
-    </div>
-
-    <!-- REAL ESTATE -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/69/69524.png" class="inv-icon">
-            <div>
-                <p>Real Estate</p>
-                <small>Property</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$1,200.00</p>
-            <small class="profit">+5.2%</small>
-        </div>
-    </div>
-
-    <!-- STARTUP -->
-    <div class="investment-item">
-        <div class="left">
-            <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" class="inv-icon">
-            <div>
-                <p>Startup Fund</p>
-                <small>Private Equity</small>
-            </div>
-        </div>
-        <div class="right">
-            <p>$890.00</p>
-            <small class="profit">+6.4%</small>
-        </div>
-    </div>
-
-</div>
-
-<!-- INVESTMENT SECTION -->
-<div id="investmentSection" style="display:none; margin-top:20px;">
-
-    <button onclick="goHome()">← Back</button>
-    <div class="investment">
-        <h3>Investment Account</h3>
-        <p>$12,450.00</p>
-    </div>
-
-    <div class="history">
-        <h3>Investment Transactions</h3>
-
-        {% for t in transactions[:3] %}
-        <div class="tx">
-            <span>{{ t.receiver_name }}</span>
-            <span class="{{ 'debit' if t.transaction_type=='debit' else 'credit' }}">
-                ${{ "{:,.2f}".format(t.amount or 0) }}
-            </span>
-        </div>
-        {% endfor %}
-    </div>
-
-</div>
-
 
 <script>
 function showReceive(){
@@ -621,15 +1055,21 @@ function goHome(){
     document.getElementById("investmentSection").style.display = "none";
 }
 
-</script>
+/* Balance show/hide toggle */
+(function(){
+    var toggle = document.getElementById('balance-toggle');
+    var amountEl = document.getElementById('balance-amount');
+    var realValue = '$' + amountEl.getAttribute('data-value');
+    var hidden = false;
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-    <a href="/dashboard">🏠<br>Home</a>
-    <a href="/invest">📈<br>Invest</a>
-    <a href="/transactions">📄<br>History</a>
-    <a href="/settings">⚙️<br>Settings</a>
-</div>
+    toggle.addEventListener('click', function(){
+        hidden = !hidden;
+        amountEl.textContent = hidden ? '••••••' : realValue;
+        toggle.setAttribute('aria-pressed', String(!hidden));
+        toggle.setAttribute('aria-label', hidden ? 'Show balance' : 'Hide balance');
+    });
+})();
+</script>
 
 </body>
 </html>
