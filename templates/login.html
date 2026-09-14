@@ -42,8 +42,6 @@ body{
     overflow-x:hidden;
 }
 
-/* ============ LAYOUT ============ */
-
 .screen{
     display:flex;
     width:100%;
@@ -165,7 +163,6 @@ body{
     color:var(--ink);
 }
 
-/* FLASH / ERROR */
 .error{
     background:var(--error-bg);
     color:var(--error);
@@ -177,7 +174,7 @@ body{
     border:1px solid rgba(179,38,30,0.18);
 }
 
-/* FIELD */
+/* FIELD — this wrapper + margin-bottom is what controls spacing between inputs */
 .field{
     margin-bottom:18px;
     text-align:left;
@@ -268,11 +265,11 @@ a:focus-visible{
     display:block;
 }
 
-/* ROW: remember me / forgot */
+/* "Remember this device" row — forgot-password link removed, so left-aligned now */
 .field-row{
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:flex-start;
     margin-bottom:22px;
 }
 
@@ -292,18 +289,6 @@ a:focus-visible{
     cursor:pointer;
 }
 
-.link{
-    font-size:13.5px;
-    color:var(--accent-dark);
-    text-decoration:none;
-    font-weight:600;
-}
-
-.link:hover{
-    text-decoration:underline;
-}
-
-/* BUTTON */
 .btn{
     width:100%;
     padding:14px;
@@ -349,7 +334,6 @@ a:focus-visible{
     to{ transform:rotate(360deg); }
 }
 
-/* DIVIDER */
 .divider{
     display:flex;
     align-items:center;
@@ -367,7 +351,6 @@ a:focus-visible{
     background:var(--line);
 }
 
-/* REGISTER */
 .register{
     text-align:center;
     font-size:14px;
@@ -384,7 +367,6 @@ a:focus-visible{
     text-decoration:underline;
 }
 
-/* CARD FOOTER TRUST LINE */
 .card-foot{
     display:flex;
     align-items:center;
@@ -508,18 +490,131 @@ a:focus-visible{
                 <div class="error" role="alert">{{ messages[0] }}</div>
               {% endif %}
             {% endwith %}
-</style></head><body><div class="card"><div class="logo">Unity<span>Bank</span></div>
- <div class="title">Login to your account</div> <!-- FLASH MESSAGE --> 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<div class="error">{{ messages[0] }}</div>
-{% endif %}
-{% endwith %}
- <form method="POST"> 
-<input type="email" name="email" placeholder="Email Address" class="input" required>
 
-<input type="password" name="password" placeholder="Password" class="input" required>
+            <form method="POST" novalidate id="login-form">
 
-<button type="submit" class="btn">Login</button>
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="input"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                        aria-describedby="email-error">
+                    <div class="field-error" id="email-error" role="alert">Enter a valid email address.</div>
+                </div>
 
- </form> <div class="register"> Don’t have an account? <a href="{{ url_for('register') }}">Create one</a> </div> </div></body> </html> 
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-row">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="input"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required
+                            aria-describedby="password-error">
+                        <button type="button" class="toggle-pw" id="toggle-pw" aria-pressed="false">
+                            <span id="toggle-pw-label">Show</span>
+                            <span class="sr-only">password</span>
+                        </button>
+                    </div>
+                    <div class="field-error" id="password-error" role="alert">Enter your password.</div>
+                </div>
+
+                <div class="field-row">
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember">
+                        <span>Remember this device</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn" id="submit-btn">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span id="submit-label">Sign in</span>
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <div class="register">
+                New to UnityBank?
+                <a href="{{ url_for('register') }}">Open an account</a>
+            </div>
+
+            <div class="card-foot">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#8A93A3" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+                <span>Your connection to this page is encrypted</span>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    var toggleBtn = document.getElementById('toggle-pw');
+    var pwInput = document.getElementById('password');
+    var toggleLabel = document.getElementById('toggle-pw-label');
+
+    toggleBtn.addEventListener('click', function () {
+        var isPassword = pwInput.type === 'password';
+        pwInput.type = isPassword ? 'text' : 'password';
+        toggleLabel.textContent = isPassword ? 'Hide' : 'Show';
+        toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    var form = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var emailError = document.getElementById('email-error');
+    var passwordError = document.getElementById('password-error');
+    var submitBtn = document.getElementById('submit-btn');
+    var submitLabel = document.getElementById('submit-label');
+
+    function isValidEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function setFieldState(input, errorEl, valid) {
+        input.classList.toggle('invalid', !valid);
+        errorEl.classList.toggle('visible', !valid);
+        input.setAttribute('aria-invalid', String(!valid));
+    }
+
+    emailInput.addEventListener('blur', function () {
+        setFieldState(emailInput, emailError, isValidEmail(emailInput.value));
+    });
+
+    pwInput.addEventListener('blur', function () {
+        setFieldState(pwInput, passwordError, pwInput.value.length > 0);
+    });
+
+    form.addEventListener('submit', function (e) {
+        var emailValid = isValidEmail(emailInput.value);
+        var pwValid = pwInput.value.length > 0;
+
+        setFieldState(emailInput, emailError, emailValid);
+        setFieldState(pwInput, passwordError, pwValid);
+
+        if (!emailValid || !pwValid) {
+            e.preventDefault();
+            (emailValid ? pwInput : emailInput).focus();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitLabel.textContent = 'Signing in…';
+    });
+})();
+</script>
+
+</body>
+</html>
