@@ -1158,8 +1158,13 @@ button:hover{
         <button onclick="goHome()" style="margin-bottom:14px;">← Back</button>
 
         <div class="balance-box" style="margin-bottom:16px;">
-            <div class="label"><span>Investment account</span></div>
-            <h1>$12,450.00</h1>
+            <div class="label">
+                <span>Investment account</span>
+                <button class="eye-btn" id="invest-balance-toggle" aria-pressed="true" aria-label="Hide investment balance">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z" stroke="#EDEFF3" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="#EDEFF3" stroke-width="1.6"/></svg>
+                </button>
+            </div>
+            <h1 id="invest-balance-amount" data-value="12,450.00">$12,450.00</h1>
         </div>
 
         <div class="history">
@@ -1265,6 +1270,22 @@ function goHome(){
         amountEl.textContent = hidden ? '••••••' : realValue;
         toggle.setAttribute('aria-pressed', String(!hidden));
         toggle.setAttribute('aria-label', hidden ? 'Show balance' : 'Hide balance');
+    });
+})();
+
+/* Investment balance show/hide toggle */
+(function(){
+    var toggle = document.getElementById('invest-balance-toggle');
+    var amountEl = document.getElementById('invest-balance-amount');
+    if (!toggle || !amountEl) return;
+    var realValue = '$' + amountEl.getAttribute('data-value');
+    var hidden = false;
+
+    toggle.addEventListener('click', function(){
+        hidden = !hidden;
+        amountEl.textContent = hidden ? '••••••' : realValue;
+        toggle.setAttribute('aria-pressed', String(!hidden));
+        toggle.setAttribute('aria-label', hidden ? 'Show investment balance' : 'Hide investment balance');
     });
 })();
 
