@@ -1,227 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unity Bank - Make a Transfer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Make a Transfer - UnityBank</title>
 <style>
+
 *{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
-/* =========================
-   BODY
-========================= */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#0f172a,#020617);
-    color: white;
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --success:#1B8A5A;
+    --success-bg:#E7F5EE;
+    --error:#B3261E;
+    --error-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-/* =========================
-   HEADER
-========================= */
-.header {
-    padding: 16px;
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: bold;
+html, body{
+    height:100%;
 }
 
-.header span {
-    color: #facc15;
+body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
 }
 
-/* =========================
-   CONTAINER (MOBILE PERFECT)
-========================= */
-.container {
-    max-width: 420px;
-    margin: auto;
-    padding: 15px;
+/* TOPBAR */
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 20px;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
-/* =========================
-   CARD
-========================= */
-.card {
-    background: #111827;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+.back-btn{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
+    text-decoration:none;
+    flex:none;
 }
 
-/* =========================
-   TEXT
-========================= */
-h2 {
-    text-align: center;
-    margin-bottom: 5px;
-    font-size: 20px;
+.back-btn:hover{
+    background:var(--line);
 }
 
-.balance {
-    text-align: center;
-    color: #9ca3af;
-    margin-bottom: 18px;
-    font-size: 14px;
+.topbar h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:17px;
 }
 
-.balance b {
-    color: #22c55e;
+/* CONTAINER */
+.container{
+    max-width:440px;
+    margin:0 auto;
+    padding:24px 20px 60px;
 }
 
-/* =========================
-   FORM GROUP
-========================= */
-.form-group {
-    margin-bottom: 14px;
+/* BALANCE STRIP */
+.balance-strip{
+    background:linear-gradient(165deg, var(--ink) 0%, var(--ink-deep) 100%);
+    border-radius:16px;
+    padding:16px 20px;
+    color:#EDEFF3;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: #d1d5db;
+.balance-strip .label{
+    font-size:12px;
+    color:#A9B2C3;
+    margin-bottom:2px;
 }
 
-/* =========================
-   INPUT (iPhone optimized)
-========================= */
-.form-group input {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: none;
-    background: #1f2937;
-    color: white;
-    font-size: 16px; /* prevents zoom on iPhone */
+.balance-strip .amount{
+    font-family:var(--font-display);
+    font-size:19px;
+    font-weight:500;
 }
 
-/* INPUT FOCUS */
-.form-group input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #facc15;
+.balance-strip svg{
+    opacity:0.7;
 }
 
-/* =========================
-   BUTTON
-========================= */
-.btn {
-    width: 100%;
-    padding: 15px;
-    margin-top: 15px;
-    background: #22c55e;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+/* CARD */
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 10px 30px rgba(11,27,51,0.06);
 }
 
-.btn:hover {
-    background: #16a34a;
+.card-intro{
+    margin-bottom:20px;
 }
 
-/* =========================
-   BACK LINK
-========================= */
-.back {
-    text-align: center;
-    margin-top: 18px;
-    color: #9ca3af;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
+.card-intro h2{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:4px;
 }
 
-.back:hover {
-    color: white;
+.card-intro p{
+    font-size:13px;
+    color:var(--text-soft);
 }
 
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
-@media(max-width:480px){
-     .container{
-        padding:12px;
-    }
-
-    .card{
-        padding:18px;
-    }
-
-    h2{
-        font-size:18px;
-    }
-
-    .form-group input{
-        padding:13px;
-    }
-
-    .btn{
-        padding:14px;
-    }
+/* FIELD */
+.field{
+    margin-bottom:16px;
+    text-align:left;
 }
+
+.field label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+}
+
+.field label .optional{
+    font-weight:400;
+    color:var(--text-soft);
+    font-size:12px;
+}
+
+.input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:8px;
+    border:1px solid #CBD1DB;
+    background:var(--card);
+    color:var(--ink);
+    outline:none;
+    font-size:16px;
+    font-family:var(--font-body);
+    transition:border-color 0.15s, box-shadow 0.15s;
+}
+
+.input::placeholder{
+    color:var(--text-soft);
+}
+
+.input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(14,124,134,0.15);
+}
+
+/* AMOUNT FIELD */
+.amount-row{
+    position:relative;
+}
+
+.amount-row .currency{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--text-soft);
+    font-size:16px;
+    pointer-events:none;
+}
+
+.amount-row .input{
+    padding-left:30px;
+    font-size:20px;
+    font-weight:600;
+}
+
+/* DIVIDER LABEL */
+.field-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:22px 0 14px;
+    color:var(--text-soft);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+}
+
+.field-section::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+}
+
+/* FEE NOTE */
+.fee-note{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+    font-size:12.5px;
+    padding:10px 12px;
+    border-radius:8px;
+    margin-bottom:18px;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:var(--accent);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    font-size:15.5px;
+    font-family:var(--font-body);
+    transition:background 0.15s;
+}
+
+.btn:hover{
+    background:var(--accent-dark);
+}
+
+.security-note{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:16px;
+    font-size:12px;
+    color:var(--text-soft);
+}
+
 </style>
 </head>
 <body>
 
-    <div class="header">
-        Unity<span>Bank</span>
+<div class="topbar">
+    <a href="{{ url_for('dashboard') }}" class="back-btn" aria-label="Back to dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.8"/></svg>
+    </a>
+    <h1>Unity<span style="color:var(--accent);">Bank</span> Transfer</h1>
+</div>
+
+<div class="container">
+
+    <div class="balance-strip">
+        <div>
+            <div class="label">Available balance</div>
+            <div class="amount">${{ "{:,.2f}".format(user.balance) }}</div>
+        </div>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#5FC3CB" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" stroke="#5FC3CB" stroke-width="1.6"/></svg>
     </div>
 
-    <div class="container">
-        <div class="card">
+    <div class="card">
+        <div class="card-intro">
+            <h2>Make a transfer</h2>
+            <p>Send money to another bank account securely.</p>
+        </div>
 
-            <h2>Make a Transfer</h2>
+        <form method="POST" action="{{ url_for('go_to_pin') }}" id="transfer-form">
 
-            <div class="balance">
-                Available Balance: 
-                <b>${{ "{:,.2f}".format(user.balance) }}</b>
+            <div class="field-section">Recipient</div>
+
+            <div class="field">
+                <label for="bank">Bank</label>
+                <input type="text" id="bank" name="bank" class="input" placeholder="e.g. First National Bank" required>
             </div>
 
-  <form method="POST" action="{{ url_for('go_to_pin') }}">
+            <div class="field">
+                <label for="account_number">Account number</label>
+                <input type="text" id="account_number" name="account_number" class="input" inputmode="numeric" placeholder="Enter account number" required>
+            </div>
 
-    <div class="form-group">
-        <label>Bank</label>
-        <input type="text" name="bank" placeholder="Enter bank name" required>
+            <div class="field">
+                <label for="receiver_name">Receiver name</label>
+                <input type="text" id="receiver_name" name="receiver_name" class="input" placeholder="Full name on the account" required>
+            </div>
+
+            <div class="field">
+                <label for="address">Address <span class="optional">optional</span></label>
+                <input type="text" id="address" name="address" class="input" placeholder="Receiver's address">
+            </div>
+
+            <div class="field-section">Amount</div>
+
+            <div class="field">
+                <label for="amount">Transfer amount</label>
+                <div class="amount-row">
+                    <span class="currency">$</span>
+                    <input type="number" id="amount" name="amount" class="input" placeholder="0.00" min="0.01" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="fee-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.6"/></svg>
+                No fee for transfers between UnityBank accounts.
+            </div>
+
+            <button type="submit" class="btn">Continue to confirm</button>
+
+            <div class="security-note">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+                You'll confirm this transfer with your PIN on the next step.
+            </div>
+
+        </form>
     </div>
 
-    <div class="form-group">
-        <label>Account Number</label>
-        <input type="text" name="account_number" placeholder="Enter account number" required>
-    </div>
-
-    <div class="form-group">
-        <label>Receiver Name</label>
-        <input type="text" name="receiver_name" placeholder="Enter receiver name" required>
-    </div>
-
-    <div class="form-group">
-        <label>Address (optional)</label>
-        <input type="text" name="address" placeholder="Enter address">
-    </div>
-
-    <div class="form-group">
-        <label>Amount</label>
-        <input type="number" name="amount" placeholder="Enter amount" required>
-    </div>
-
-    <button type="submit" class="btn">
-        Confirm Transfer
-    </button>
-
-</form>
-            <a href="{{ url_for('dashboard') }}" class="back">
-                ← Back to Dashboard
-            </a>
-
-        </div>
-    </div>
+</div>
 
 </body>
-<html>
+</html>
