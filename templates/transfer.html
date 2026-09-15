@@ -112,8 +112,26 @@ body{
     font-weight:500;
 }
 
-.balance-strip svg{
+.balance-strip svg.wallet-icon{
     opacity:0.7;
+}
+
+.eye-btn{
+    background:rgba(255,255,255,0.08);
+    border:none;
+    color:#EDEFF3;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex:none;
+}
+
+.eye-btn:hover{
+    background:rgba(255,255,255,0.16);
 }
 
 /* CARD */
@@ -283,9 +301,11 @@ body{
     <div class="balance-strip">
         <div>
             <div class="label">Available balance</div>
-            <div class="amount">${{ "{:,.2f}".format(user.balance) }}</div>
+            <div class="amount" id="balance-amount" data-value="{{ '{:,.2f}'.format(user.balance) }}">${{ "{:,.2f}".format(user.balance) }}</div>
         </div>
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#5FC3CB" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" stroke="#5FC3CB" stroke-width="1.6"/></svg>
+        <button class="eye-btn" id="balance-toggle" aria-pressed="true" aria-label="Hide balance">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z" stroke="#EDEFF3" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="#EDEFF3" stroke-width="1.6"/></svg>
+        </button>
     </div>
 
     <div class="card">
@@ -344,6 +364,22 @@ body{
     </div>
 
 </div>
+
+<script>
+(function(){
+    var toggle = document.getElementById('balance-toggle');
+    var amountEl = document.getElementById('balance-amount');
+    var realValue = '$' + amountEl.getAttribute('data-value');
+    var hidden = false;
+
+    toggle.addEventListener('click', function(){
+        hidden = !hidden;
+        amountEl.textContent = hidden ? '••••••' : realValue;
+        toggle.setAttribute('aria-pressed', String(!hidden));
+        toggle.setAttribute('aria-label', hidden ? 'Show balance' : 'Hide balance');
+    });
+})();
+</script>
 
 </body>
 </html>
