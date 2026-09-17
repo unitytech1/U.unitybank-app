@@ -2,171 +2,350 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verify Transfer</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Verify Transfer - UnityBank</title>
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --error:#B3261E;
+    --error-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
     margin:0;
-    font-family:'Segoe UI', sans-serif;
-    background:linear-gradient(135deg,#0f172a,#020617);
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 20px;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+}
+
+.wordmark{
+    font-family:var(--font-display);
+    font-size:17px;
+}
+
+.wordmark span{
+    color:var(--accent);
+}
+
+/* CENTER AREA */
+.wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px 20px 60px;
+}
+
+.card{
+    width:100%;
+    max-width:380px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:32px 28px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(11,27,51,0.06);
+}
+
+.icon-badge{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 18px;
+}
+
+.title{
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.sub{
+    font-size:13.5px;
+    color:var(--text-muted);
+    margin-bottom:24px;
+    line-height:1.5;
+}
+
+.sub strong{
+    color:var(--ink);
+}
+
+/* FLASH / ERROR */
+.error-box{
+    background:var(--error-bg);
+    color:var(--error);
+    padding:11px 14px;
+    border-radius:8px;
+    margin-bottom:18px;
+    font-size:13px;
+    text-align:left;
+    border:1px solid rgba(179,38,30,0.18);
+}
+
+/* OTP BOXES */
+.otp-row{
     display:flex;
     justify-content:center;
-    align-items:center;
-    height:100vh;
-    color:white;
-}
-
-/* CONTAINER */
-.container{
-    width:100%;
-    max-width:420px;
-    padding:20px;
-}
-
-/* CARD */
-.card{
-    background:#111827;
-    padding:30px 25px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.6);
-}
-
-/* LOGO */
-.logo{
-    font-size:22px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-.logo span{
-    color:#facc15;
-}
-
-/* ICON */
-.icon{
-    font-size:40px;
+    gap:9px;
     margin-bottom:10px;
 }
 
-/* TITLE */
-.title{
+.otp-box{
+    width:44px;
+    height:56px;
+    border-radius:10px;
+    border:1.5px solid #CBD1DB;
+    background:var(--paper);
+    color:var(--ink);
     font-size:22px;
-    font-weight:bold;
-}
-
-/* SUBTEXT */
-.sub{
-    font-size:13px;
-    color:#94a3b8;
-    margin:10px 0 25px;
-}
-
-/* OTP INPUT */
-.otp-input{
-    width:100%;
-    padding:18px;
-    font-size:26px;
-    letter-spacing:12px;
+    font-weight:600;
     text-align:center;
-    border-radius:12px;
-    border:none;
-    background:#020617;
-    color:white;
-    margin-bottom:20px;
+    outline:none;
+    transition:border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
-/* INPUT FOCUS */
-.otp-input:focus{
-    outline:none;
-    box-shadow:0 0 0 2px #22c55e;
+.otp-box:focus{
+    border-color:var(--accent);
+    background:var(--card);
+    box-shadow:0 0 0 3px rgba(14,124,134,0.15);
+}
+
+.otp-box.filled{
+    border-color:var(--accent);
+    background:var(--card);
+}
+
+.otp-error{
+    color:var(--error);
+    font-size:12.5px;
+    min-height:18px;
+    margin-bottom:10px;
 }
 
 /* BUTTON */
 .btn{
     width:100%;
-    padding:15px;
+    padding:14px;
     border:none;
-    border-radius:12px;
-    background:#22c55e;
+    border-radius:8px;
+    background:var(--accent);
     color:white;
-    font-weight:bold;
-    font-size:16px;
+    font-weight:600;
     cursor:pointer;
-    transition:0.2s;
+    font-size:15.5px;
+    font-family:var(--font-body);
+    transition:background 0.15s;
+    margin-top:8px;
 }
 
 .btn:hover{
-    background:#16a34a;
+    background:var(--accent-dark);
 }
 
-/* ERROR */
-.error-box{
-    background:#7f1d1d;
-    color:#fecaca;
-    padding:10px;
-    border-radius:8px;
-    margin-bottom:15px;
+.btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
+/* RESEND / TIMER */
+.resend{
+    margin-top:18px;
     font-size:13px;
+    color:var(--text-muted);
 }
 
-/* FOOTER */
-.footer{
-    margin-top:15px;
-    font-size:11px;
-    color:#64748b;
+.resend a{
+    color:var(--accent-dark);
+    font-weight:600;
+    text-decoration:none;
 }
+
+.resend a:hover{
+    text-decoration:underline;
+}
+
+.resend.disabled a{
+    color:var(--text-soft);
+    pointer-events:none;
+    text-decoration:none;
+}
+
+.footer{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:22px;
+    font-size:12px;
+    color:var(--text-soft);
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="topbar">
+    <div class="wordmark">Unity<span>Bank</span></div>
+</div>
+
+<div class="wrap">
     <div class="card">
 
-        <div class="logo">Unity<span>Bank</span></div>
-
-        <div class="icon">🛡️</div>
-
-        <div class="title">Authorization Required</div>
-        <div class="sub">
-            Enter the 6-digit code sent to your email to complete this transfer
+        <div class="icon-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 6v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V6l-8-3z" stroke="#0E7C86" stroke-width="1.7" fill="none"/><path d="M9 12l2 2 4-4" stroke="#0E7C86" stroke-width="1.7"/></svg>
         </div>
 
-        <!-- FLASH MESSAGE -->
+        <div class="title">Authorization required</div>
+        <div class="sub">Enter the 6-digit code sent to <strong>{{ user.email if user and user.email else 'your email' }}</strong> to complete this transfer.</div>
+
         {% with messages = get_flashed_messages() %}
           {% if messages %}
-            <div class="error-box">
-                {{ messages[0] }}
-            </div>
+            <div class="error-box" role="alert">{{ messages[0] }}</div>
           {% endif %}
         {% endwith %}
 
-        <form method="POST" action="{{ url_for('verify_transfer') }}">
+        <form method="POST" action="{{ url_for('verify_transfer') }}" id="otp-form" novalidate>
 
-            <input 
-                type="text"
-                name="otp"
-                class="otp-input"
-                placeholder="••••••"
-                maxlength="6"
-                pattern="\d{6}"
-                required
-                autocomplete="off"
-            >
+            <div class="otp-row" id="otp-row">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="0" autocomplete="off">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="1" autocomplete="off">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="2" autocomplete="off">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="3" autocomplete="off">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="4" autocomplete="off">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="5" autocomplete="off">
+            </div>
 
-            <button type="submit" class="btn">
-                Confirm & Authorize
-            </button>
+            <div class="otp-error" id="otp-error" role="alert"></div>
+
+            <input type="hidden" name="otp" id="otp-hidden">
+
+            <button type="submit" class="btn" id="submit-btn" disabled>Confirm &amp; authorize</button>
 
         </form>
 
+        <div class="resend" id="resend-row">
+            Didn't get a code? <a href="#" id="resend-link">Resend in <span id="countdown">30</span>s</a>
+        </div>
+
         <div class="footer">
-            Never share your OTP with anyone
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+            Never share your OTP with anyone.
         </div>
 
     </div>
 </div>
+
+<script>
+(function(){
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.otp-box'));
+    var hidden = document.getElementById('otp-hidden');
+    var submitBtn = document.getElementById('submit-btn');
+    var errorEl = document.getElementById('otp-error');
+    var form = document.getElementById('otp-form');
+
+    function updateState(){
+        var value = boxes.map(function(b){ return b.value; }).join('');
+        hidden.value = value;
+        submitBtn.disabled = value.length !== 6;
+        boxes.forEach(function(b){ b.classList.toggle('filled', b.value.length > 0); });
+    }
+
+    boxes.forEach(function(box, i){
+        box.addEventListener('input', function(){
+            box.value = box.value.replace(/[^0-9]/g, '').slice(0, 1);
+            if (box.value && i < boxes.length - 1) {
+                boxes[i + 1].focus();
+            }
+            updateState();
+        });
+
+        box.addEventListener('keydown', function(e){
+            if (e.key === 'Backspace' && !box.value && i > 0) {
+                boxes[i - 1].focus();
+            }
+        });
+
+        box.addEventListener('paste', function(e){
+            e.preventDefault();
+            var digits = (e.clipboardData.getData('text') || '').replace(/[^0-9]/g, '').slice(0, 6).split('');
+            digits.forEach(function(d, idx){
+                if (boxes[idx]) boxes[idx].value = d;
+            });
+            updateState();
+            var next = boxes[Math.min(digits.length, boxes.length - 1)];
+            if (next) next.focus();
+        });
+    });
+
+    form.addEventListener('submit', function(e){
+        if (hidden.value.length !== 6) {
+            e.preventDefault();
+            errorEl.textContent = 'Enter all 6 digits of your code.';
+        }
+    });
+
+    if (boxes[0]) boxes[0].focus();
+
+    /* Resend countdown */
+    var countdownEl = document.getElementById('countdown');
+    var resendLink = document.getElementById('resend-link');
+    var resendRow = document.getElementById('resend-row');
+    var seconds = 30;
+
+    var timer = setInterval(function(){
+        seconds--;
+        if (seconds <= 0) {
+            clearInterval(timer);
+            resendRow.classList.remove('disabled');
+            resendLink.textContent = 'Resend code';
+        } else {
+            countdownEl.textContent = seconds;
+        }
+    }, 1000);
+    resendRow.classList.add('disabled');
+})();
+</script>
 
 </body>
 </html>
