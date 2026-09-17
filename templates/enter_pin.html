@@ -1,136 +1,319 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Enter PIN</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Confirm Transfer - UnityBank</title>
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --error:#B3261E;
+    --error-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
     margin:0;
-    font-family:'Segoe UI', sans-serif;
-    background:linear-gradient(135deg,#0f172a,#020617);
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 20px;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+}
+
+.back-btn{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
+    text-decoration:none;
+    flex:none;
+}
+
+.back-btn:hover{
+    background:var(--line);
+}
+
+.topbar h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:17px;
+}
+
+/* CENTER AREA */
+.wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px 20px 60px;
+}
+
+.card{
+    width:100%;
+    max-width:380px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:32px 28px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(11,27,51,0.06);
+}
+
+.icon-badge{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 18px;
+}
+
+.title{
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.sub{
+    font-size:13.5px;
+    color:var(--text-muted);
+    margin-bottom:28px;
+    line-height:1.5;
+}
+
+/* PIN BOXES */
+.pin-row{
     display:flex;
     justify-content:center;
-    align-items:center;
-    height:100vh;
-    color:white;
-}
-
-/* CONTAINER */
-.container{
-    width:100%;
-    max-width:420px;
-    padding:20px;
-}
-
-/* CARD */
-.card{
-    background:#111827;
-    padding:30px 25px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.6);
-}
-
-/* ICON */
-.icon{
-    font-size:40px;
+    gap:12px;
     margin-bottom:10px;
 }
 
-/* TITLE */
-.title{
-    font-size:22px;
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-/* SUBTEXT */
-.sub{
-    font-size:13px;
-    color:#94a3b8;
-    margin-bottom:25px;
-}
-
-/* PIN INPUT */
-.pin-input{
-    width:100%;
-    padding:18px;
-    font-size:26px;
-    text-align:center;
-    letter-spacing:12px;
+.pin-box{
+    width:56px;
+    height:64px;
     border-radius:12px;
-    border:none;
-    background:#020617;
-    color:white;
-    margin-bottom:25px;
+    border:1.5px solid #CBD1DB;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:26px;
+    font-weight:600;
+    text-align:center;
+    outline:none;
+    transition:border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
-/* INPUT FOCUS */
-.pin-input:focus{
-    outline:none;
-    box-shadow:0 0 0 2px #22c55e;
+.pin-box:focus{
+    border-color:var(--accent);
+    background:var(--card);
+    box-shadow:0 0 0 3px rgba(14,124,134,0.15);
+}
+
+.pin-box.filled{
+    border-color:var(--accent);
+    background:var(--card);
+}
+
+.pin-error{
+    color:var(--error);
+    font-size:12.5px;
+    min-height:18px;
+    margin-bottom:14px;
 }
 
 /* BUTTON */
 .btn{
     width:100%;
-    padding:15px;
+    padding:14px;
     border:none;
-    border-radius:12px;
-    background:#22c55e;
+    border-radius:8px;
+    background:var(--accent);
     color:white;
-    font-weight:bold;
-    font-size:16px;
+    font-weight:600;
     cursor:pointer;
-    transition:0.2s;
+    font-size:15.5px;
+    font-family:var(--font-body);
+    transition:background 0.15s;
+    margin-top:8px;
 }
 
 .btn:hover{
-    background:#16a34a;
+    background:var(--accent-dark);
 }
 
-/* SMALL NOTE */
-.note{
-    margin-top:15px;
-    font-size:11px;
-    color:#64748b;
+.btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
 }
+
+.note{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:22px;
+    font-size:12px;
+    color:var(--text-soft);
+}
+
+.resend{
+    margin-top:16px;
+    font-size:13px;
+    color:var(--text-muted);
+}
+
+.resend a{
+    color:var(--accent-dark);
+    font-weight:600;
+    text-decoration:none;
+}
+
+.resend a:hover{
+    text-decoration:underline;
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="topbar">
+    <a href="{{ url_for('transfer') }}" class="back-btn" aria-label="Back to transfer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.8"/></svg>
+    </a>
+    <h1>Unity<span style="color:var(--accent);">Bank</span></h1>
+</div>
+
+<div class="wrap">
     <div class="card">
 
-        <div class="icon">🔐</div>
+        <div class="icon-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#0E7C86" stroke-width="1.7"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#0E7C86" stroke-width="1.7"/></svg>
+        </div>
 
-        <div class="title">Enter Transfer PIN</div>
-        <div class="sub">Confirm this transaction securely</div>
+        <div class="title">Enter your transfer PIN</div>
+        <div class="sub">Confirm this transaction securely to complete your transfer.</div>
 
-        <form method="POST" action="{{ url_for('confirm_pin') }}">
+        <form method="POST" action="{{ url_for('confirm_pin') }}" id="pin-form" novalidate>
 
-            <input 
-                type="password" 
-                name="pin" 
-                maxlength="4" 
-                class="pin-input" 
-                placeholder="••••" 
-                required
-            >
+            <div class="pin-row" id="pin-row">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box" data-index="0" autocomplete="off">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box" data-index="1" autocomplete="off">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box" data-index="2" autocomplete="off">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box" data-index="3" autocomplete="off">
+            </div>
 
-            <button class="btn">Confirm</button>
+            <div class="pin-error" id="pin-error" role="alert"></div>
+
+            <input type="hidden" name="pin" id="pin-hidden">
+
+            <button type="submit" class="btn" id="submit-btn" disabled>Confirm</button>
 
         </form>
 
+        <div class="resend">
+            Forgot your PIN? <a href="#">Reset it</a>
+        </div>
+
         <div class="note">
-            Never share your PIN with anyone
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+            Never share your PIN with anyone.
         </div>
 
     </div>
 </div>
 
+<script>
+(function(){
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.pin-box'));
+    var hidden = document.getElementById('pin-hidden');
+    var submitBtn = document.getElementById('submit-btn');
+    var errorEl = document.getElementById('pin-error');
+    var form = document.getElementById('pin-form');
+
+    function updateState(){
+        var value = boxes.map(function(b){ return b.value; }).join('');
+        hidden.value = value;
+        submitBtn.disabled = value.length !== 4;
+        boxes.forEach(function(b){ b.classList.toggle('filled', b.value.length > 0); });
+    }
+
+    boxes.forEach(function(box, i){
+        box.addEventListener('input', function(){
+            box.value = box.value.replace(/[^0-9]/g, '').slice(0, 1);
+            if (box.value && i < boxes.length - 1) {
+                boxes[i + 1].focus();
+            }
+            updateState();
+        });
+
+        box.addEventListener('keydown', function(e){
+            if (e.key === 'Backspace' && !box.value && i > 0) {
+                boxes[i - 1].focus();
+            }
+        });
+
+        box.addEventListener('paste', function(e){
+            e.preventDefault();
+            var digits = (e.clipboardData.getData('text') || '').replace(/[^0-9]/g, '').slice(0, 4).split('');
+            digits.forEach(function(d, idx){
+                if (boxes[idx]) boxes[idx].value = d;
+            });
+            updateState();
+            var next = boxes[Math.min(digits.length, boxes.length - 1)];
+            if (next) next.focus();
+        });
+    });
+
+    form.addEventListener('submit', function(e){
+        if (hidden.value.length !== 4) {
+            e.preventDefault();
+            errorEl.textContent = 'Enter all 4 digits of your PIN.';
+        }
+    });
+})();
+</script>
+
 </body>
 </html>
+
