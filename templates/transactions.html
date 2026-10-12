@@ -2,52 +2,207 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transaction History</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Transaction History - UnityBank</title>
 <style>
 
-/* BODY */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --success:#1B8A5A;
+    --success-bg:#E7F5EE;
+    --danger:#B3261E;
+    --danger-bg:#FDECEA;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
     margin:0;
-    font-family:'Segoe UI';
-    background:linear-gradient(135deg,#0f172a,#020617);
-    color:white;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
 }
-.month-title{
-    margin:20px 0 10px;
-    font-size:13px;
-    color:#94a3b8;
+
+a{ color:inherit; }
+
+/* ============ LAYOUT (matches dashboard/settings) ============ */
+.container{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    min-height:100vh;
+}
+
+@media (max-width:900px){
+    .container{ display:block; }
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:var(--card);
+    border-right:1px solid var(--line);
+    padding:28px 20px;
+    height:100vh;
+    position:sticky;
+    top:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar .wordmark{
+    font-family:var(--font-display);
+    font-size:21px;
+    color:var(--ink);
+    padding:0 8px;
+    margin-bottom:32px;
+}
+
+.sidebar .wordmark span{
+    color:var(--accent);
+}
+
+.nav-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.sidebar a.nav-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 12px;
+    border-radius:10px;
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    transition:background 0.15s, color 0.15s;
+}
+
+.sidebar a.nav-link svg{ flex:none; }
+
+.sidebar a.nav-link:hover{
+    background:var(--paper);
+    color:var(--ink);
+}
+
+.sidebar a.nav-link.active{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+}
+
+@media (max-width:900px){
+    .sidebar{ display:none; }
 }
 
 /* MAIN */
 .main{
-    padding:15px;
-    padding-bottom:80px;
+    padding:32px 36px 100px;
+    max-width:680px;
+}
+
+@media (max-width:900px){
+    .main{ padding:20px 16px 96px; max-width:none; }
 }
 
 /* HEADER */
 .header{
     display:flex;
     align-items:center;
-    margin-bottom:20px;
+    gap:12px;
+    margin-bottom:22px;
 }
 
 .back{
-    background:#1f2937;
-    padding:6px 10px;
-    border-radius:8px;
-    margin-right:10px;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
     text-decoration:none;
-    color:white;
+    flex:none;
+}
+
+.back:hover{
+    background:var(--paper);
+}
+
+.header h2{
+    font-size:19px;
+    font-weight:600;
+}
+
+/* FILTER TABS */
+.filter-tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:18px;
+    overflow-x:auto;
+}
+
+.filter-tab{
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text-muted);
+    font-size:12.5px;
+    font-weight:600;
+    padding:7px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    flex:none;
+}
+
+.filter-tab:hover{
+    background:var(--paper);
+}
+
+.filter-tab.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
 }
 
 /* CARD */
 .history-box{
-    background:#111827;
-    border-radius:20px;
-    padding:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:4px 18px;
+    box-shadow:0 10px 30px rgba(11,27,51,0.05);
+}
+
+/* MONTH TITLE */
+.month-title{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--text-soft);
+    padding:16px 0 6px;
 }
 
 /* ROW */
@@ -55,121 +210,236 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:14px 0;
-    border-bottom:1px solid #1f2937;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
 }
 
 .tx:last-child{
     border-bottom:none;
 }
 
-/* LEFT */
 .tx-left{
     display:flex;
-    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+.tx-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+}
+
+.tx-icon.credit-icon{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.tx-icon.debit-icon{
+    background:var(--danger-bg);
+    color:var(--danger);
 }
 
 .tx-name{
-    font-size:14px;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
 }
 
 .tx-date{
-    font-size:11px;
-    opacity:0.6;
+    font-size:12px;
+    color:var(--text-soft);
+    margin-top:1px;
 }
 
-/* RIGHT */
 .tx-amount{
     font-size:14px;
-    font-weight:500;
+    font-weight:600;
 }
 
-.credit{
-    color:#22c55e;
-}
+.credit{ color:var(--success); }
+.debit{ color:var(--danger); }
 
-.debit{
-    color:#ef4444;
-}
-
-/* BOTTOM NAV */
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:#020617;
-    display:flex;
-    justify-content:space-around;
-    padding:10px 0;
-    border-top:1px solid #1f2937;
-}
-
-.bottom-nav a{
-    color:#94a3b8;
-    text-decoration:none;
-    font-size:12px;
+.empty-state{
     text-align:center;
+    padding:40px 10px;
+    color:var(--text-soft);
+    font-size:13.5px;
 }
 
-.bottom-nav a:hover{
-    color:#22c55e;
+/* BOTTOM NAV (mobile) */
+.bottom-nav{
+    display:none;
 }
 
+@media (max-width:900px){
+    .bottom-nav{
+        display:flex;
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        background:var(--card);
+        justify-content:space-around;
+        padding:10px 0 calc(10px + env(safe-area-inset-bottom));
+        border-top:1px solid var(--line);
+        z-index:900;
+    }
+
+    .bottom-nav a{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:3px;
+        color:var(--text-soft);
+        text-decoration:none;
+        font-size:10.5px;
+        font-weight:600;
+    }
+
+    .bottom-nav a.active{
+        color:var(--accent-dark);
+    }
+}
 
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="wordmark">Unity<span>Bank</span></div>
+
+    <nav class="nav-group">
+        <a href="/dashboard" class="nav-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="1.7"/><path d="M6 10v9a1 1 0 001 1h10a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.7"/></svg>
+            Dashboard
+        </a>
+        <a href="/transfer" class="nav-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h13M17 7l-3.5-3.5M17 7l-3.5 3.5" stroke="currentColor" stroke-width="1.7"/><path d="M20 17H7M7 17l3.5-3.5M7 17l3.5 3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+            Transfer
+        </a>
+        <a href="/transactions" class="nav-link active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7"/></svg>
+            History
+        </a>
+        <a href="/settings" class="nav-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1-1.7-1.7-1.7-1.7 1a1.7 1.7 0 00-3 0l-1-1.7-1.7 0-1 1.7a1.7 1.7 0 00-3 0l-1.7-1-1.7 1.7 1 1.7a1.7 1.7 0 000 3l-1 1.7 1.7 1.7 1.7-1a1.7 1.7 0 003 0l1 1.7 1.7 0 1-1.7a1.7 1.7 0 003 0l1.7 1 1.7-1.7-1-1.7z" stroke="currentColor" stroke-width="1.3"/></svg>
+            Settings
+        </a>
+    </nav>
+</div>
+
+<!-- MAIN -->
 <div class="main">
 
     <!-- HEADER -->
     <div class="header">
-        <a href="/dashboard" class="back">←</a>
-        <h2>Transaction History</h2>
+        <a href="/dashboard" class="back" aria-label="Back to dashboard">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.8"/></svg>
+        </a>
+        <h2>Transaction history</h2>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+        <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all', this)">All</button>
+        <button type="button" class="filter-tab" data-filter="credit" onclick="setFilter('credit', this)">Money in</button>
+        <button type="button" class="filter-tab" data-filter="debit" onclick="setFilter('debit', this)">Money out</button>
     </div>
 
     <!-- HISTORY -->
     <div class="history-box">
 
-      {% for month, items in grouped.items() %}
+        {% for month, items in grouped.items() %}
 
-    <!-- MONTH TITLE -->
-   <div class="month-title">{{ month }}</div>
-   
-    {% for tx in items %}
-    <div class="tx">
-        <div class="tx-left">
-            <div class="tx-name">{{ tx.name }}</div>
-            <div class="tx-date">{{ tx.date }}</div>
+        <div class="month-title">{{ month }}</div>
+
+        {% for tx in items %}
+        <div class="tx" data-type="{{ tx.type }}">
+            <div class="tx-left">
+                <div class="tx-icon {{ 'debit-icon' if tx.type == 'debit' else 'credit-icon' }}">
+                    {% if tx.type == 'debit' %}
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M12 19l-6-6M12 19l6-6" stroke="currentColor" stroke-width="1.8"/></svg>
+                    {% else %}
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8"/></svg>
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="tx-name">{{ tx.name }}</div>
+                    <div class="tx-date">{{ tx.date }}</div>
+                </div>
+            </div>
+
+            <div class="tx-amount {{ 'credit' if tx.type == 'credit' else 'debit' }}">
+                {% if tx.type == 'credit' %}+${{ tx.amount }}{% else %}-${{ tx.amount }}{% endif %}
+            </div>
         </div>
+        {% endfor %}
 
-        <div class="tx-amount 
-            {% if tx.type == 'credit' %} credit {% else %} debit {% endif %}
-        ">
-            {% if tx.type == 'credit' %}
-                +${{ tx.amount }}
-            {% else %}
-                -${{ tx.amount }}
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
+        {% else %}
+        <div class="empty-state">No transactions yet.</div>
+        {% endfor %}
 
-{% endfor %}
-        
     </div>
 
 </div>
+</div>
 
-<!-- BOTTOM NAV -->
+<!-- NAV (mobile) -->
 <div class="bottom-nav">
-    <a href="/dashboard">🏠<br>Home</a>
-    <a href="/invest">📈<br>Invest</a>
-    <a href="/transactions">📄<br>History</a>
-    <a href="/settings">⚙️<br>Settings</a>
+    <a href="/dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="1.7"/><path d="M6 10v9a1 1 0 001 1h10a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.7"/></svg>
+        Home
+    </a>
+    <a href="/transfer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h13M17 7l-3.5-3.5M17 7l-3.5 3.5" stroke="currentColor" stroke-width="1.7"/><path d="M20 17H7M7 17l3.5-3.5M7 17l3.5 3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+        Transfer
+    </a>
+    <a href="/transactions" class="active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7"/></svg>
+        History
+    </a>
+    <a href="/settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1-1.7-1.7-1.7-1.7 1a1.7 1.7 0 00-3 0l-1-1.7-1.7 0-1 1.7a1.7 1.7 0 00-3 0l-1.7-1-1.7 1.7 1 1.7a1.7 1.7 0 000 3l-1 1.7 1.7 1.7 1.7-1a1.7 1.7 0 003 0l1 1.7 1.7 0 1-1.7a1.7 1.7 0 003 0l1.7 1 1.7-1.7-1-1.7z" stroke="currentColor" stroke-width="1.3"/></svg>
+        Settings
+    </a>
 </div>
+
+<script>
+function setFilter(type, btn){
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.tx').forEach(function(tx){
+        if (type === 'all') {
+            tx.style.display = 'flex';
+        } else {
+            tx.style.display = (tx.dataset.type === type) ? 'flex' : 'none';
+        }
+    });
+
+    document.querySelectorAll('.month-title').forEach(function(title){
+        var next = title.nextElementSibling;
+        var hasVisible = false;
+        while (next && !next.classList.contains('month-title')) {
+            if (next.classList.contains('tx') && next.style.display !== 'none') {
+                hasVisible = true;
+                break;
+            }
+            next = next.nextElementSibling;
+        }
+        title.style.display = hasVisible ? 'block' : 'none';
+    });
+}
+</script>
 
 </body>
 </html>
