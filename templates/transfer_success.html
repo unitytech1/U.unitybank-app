@@ -2,91 +2,199 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transaction Successful</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Transaction Successful - UnityBank</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --ink:#0B1B33;
+    --ink-deep:#061224;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --accent:#0E7C86;
+    --accent-dark:#0A5F67;
+    --accent-soft:rgba(14,124,134,0.10);
+    --text-muted:#5B6472;
+    --text-soft:#8A93A3;
+    --line:#E2E5EA;
+    --success:#1B8A5A;
+    --success-bg:#E7F5EE;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
+    --font-body: "Segoe UI", ui-sans-serif, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+html, body{
+    height:100%;
+}
+
 body{
     margin:0;
-    font-family:'Segoe UI', sans-serif;
-    background:linear-gradient(135deg,#0f172a,#020617);
-    color:white;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
 }
 
 /* LOADER */
 #loader{
     position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#020617;
+    inset:0;
+    background:linear-gradient(165deg, var(--ink) 0%, var(--ink-deep) 100%);
     display:flex;
+    flex-direction:column;
+    gap:14px;
     justify-content:center;
     align-items:center;
     z-index:999;
-    font-size:18px;
+    color:#EDEFF3;
+    font-size:14px;
+}
+
+.spinner{
+    width:34px;
+    height:34px;
+    border:3px solid rgba(255,255,255,0.2);
+    border-top-color:#5FC3CB;
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    to{ transform:rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .spinner{ animation:none; }
+}
+
+/* HEADER */
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px 20px;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+}
+
+.wordmark{
+    font-family:var(--font-display);
+    font-size:17px;
+}
+
+.wordmark span{
+    color:var(--accent);
 }
 
 /* CONTAINER */
 .container{
     max-width:420px;
-    margin:auto;
-    padding:20px;
+    margin:0 auto;
+    padding:28px 20px 60px;
 }
 
 /* CARD */
 .success-card{
-    background:#111827;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:30px 26px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(11,27,51,0.06);
     text-align:center;
     display:none;
 }
 
 /* ICON */
 .check{
-    width:70px;
-    height:70px;
-    background:#22c55e;
+    width:64px;
+    height:64px;
+    background:var(--success-bg);
     border-radius:50%;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:30px;
-    margin:0 auto 15px;
+    margin:0 auto 16px;
 }
 
 /* TITLE */
 h2{
-    margin:10px 0 5px;
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:5px;
 }
 
 .sub{
-    font-size:13px;
-    color:#94a3b8;
+    font-size:13.5px;
+    color:var(--text-muted);
+}
+
+.amount-display{
+    font-family:var(--font-display);
+    font-size:32px;
+    font-weight:500;
+    margin:20px 0 4px;
+    color:var(--ink);
+}
+
+.amount-sub{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:22px;
 }
 
 /* DETAILS */
 .details{
     text-align:left;
-    margin-top:20px;
-    background:#020617;
-    padding:15px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:16px 16px 4px;
     border-radius:12px;
 }
 
 .row{
     display:flex;
     justify-content:space-between;
+    gap:12px;
     margin-bottom:12px;
     font-size:13px;
-    border-bottom:1px solid #1f2937;
-    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+}
+
+.row:last-child{
+    margin-bottom:0;
+}
+
+.row span:first-child{
+    color:var(--text-soft);
+}
+
+.row span:last-child{
+    font-weight:600;
+    color:var(--ink);
+    text-align:right;
+}
+
+.status-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--success-bg);
+    color:var(--success);
+    font-size:11.5px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:999px;
 }
 
 /* BUTTONS */
@@ -95,43 +203,45 @@ h2{
     padding:14px;
     margin-top:12px;
     border:none;
-    border-radius:12px;
-    font-weight:bold;
+    border-radius:8px;
+    font-weight:600;
     cursor:pointer;
     font-size:15px;
+    font-family:var(--font-body);
+    transition:background 0.15s;
 }
 
-/* DOWNLOAD */
 .download{
-    background:#22c55e;
+    background:var(--accent);
     color:white;
 }
 
 .download:hover{
-    background:#16a34a;
+    background:var(--accent-dark);
 }
 
-/* DASHBOARD */
 .home{
-    background:#2563eb;
-    color:white;
+    background:var(--card);
+    color:var(--ink);
+    border:1px solid var(--line);
     text-decoration:none;
     display:block;
     text-align:center;
+    box-sizing:border-box;
 }
 
 .home:hover{
-    background:#1d4ed8;
+    background:var(--paper);
 }
 
-/* HEADER */
-.header{
-    text-align:center;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-.header span{
-    color:#facc15;
+.footer-note{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:20px;
+    font-size:12px;
+    color:var(--text-soft);
 }
 
 </style>
@@ -139,38 +249,57 @@ h2{
 
 <body>
 
-<div id="loader">Processing Transaction...</div>
+<div id="loader">
+    <div class="spinner" aria-hidden="true"></div>
+    <div>Processing transaction…</div>
+</div>
+
+<div class="topbar">
+    <div class="wordmark">Unity<span>Bank</span></div>
+</div>
 
 <div class="container">
 
-    <div class="header">Unity<span>Bank</span></div>
-
     <div class="success-card" id="card">
 
-        <div class="check">✔</div>
+        <div class="check">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#1B8A5A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
 
-        <h2>Transaction Successful</h2>
-        <div class="sub">Your transfer was completed successfully</div>
+        <h2>Transfer successful</h2>
+        <div class="sub">Your money is on its way</div>
+
+        <div class="amount-display" id="amount-display">${{ "{:,.2f}".format(amount) }}</div>
+        <div class="amount-sub">sent to {{ receiver }}</div>
 
         <div class="details" id="receipt">
-
             <div class="row"><span>Sender</span><span id="sender">{{ sender }}</span></div>
             <div class="row"><span>Receiver</span><span id="receiver">{{ receiver }}</span></div>
             <div class="row"><span>Bank</span><span id="bank">{{ bank }}</span></div>
             <div class="row"><span>Amount</span><span id="amount">${{ "{:,.2f}".format(amount) }}</span></div>
             <div class="row"><span>Date</span><span id="date">{{ date }}</span></div>
             <div class="row"><span>Reference</span><span id="ref">{{ reference }}</span></div>
-            <div class="row"><span>Status</span><span style="color:#22c55e;">Completed</span></div>
-
+            <div class="row">
+                <span>Status</span>
+                <span class="status-pill">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#1B8A5A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Completed
+                </span>
+            </div>
         </div>
 
         <button class="btn download" onclick="downloadPDF()">
-            Download Receipt
+            Download receipt
         </button>
 
         <a href="{{ url_for('dashboard') }}" class="btn home">
-            Back to Dashboard
+            Back to dashboard
         </a>
+
+        <div class="footer-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5l-8-3z" stroke="#8A93A3" stroke-width="1.6" fill="none"/></svg>
+            Keep this receipt for your records.
+        </div>
 
     </div>
 
@@ -179,9 +308,9 @@ h2{
 <script>
 
 /* LOADER */
-setTimeout(()=>{
-    document.getElementById("loader").style.display="none";
-    document.getElementById("card").style.display="block";
+setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("card").style.display = "block";
 }, 1800);
 
 
